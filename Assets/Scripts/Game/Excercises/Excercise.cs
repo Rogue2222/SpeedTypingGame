@@ -14,9 +14,10 @@ namespace SpeedTypingGame.Game.Excercises
         private readonly string _text;
         private int _cursorPosition;
         private readonly List<ExcerciseChunk> _excerciseChunks;
+        private int _totalCorrectKeyCount;
         private int _correctKeyCount;
+        private int _totalIncorrectKeyCount;
         private int _incorrectKeyCount;
-        private int _progression;
 
 
         // Properties
@@ -27,9 +28,11 @@ namespace SpeedTypingGame.Game.Excercises
         public string FromCursor => _text.Substring(_cursorPosition, _text.Length - _cursorPosition);
         public int ChunkCount => _excerciseChunks.Count;
         public ExcerciseChunk this[int index] => _excerciseChunks[index];
+        public int TotalCorrectKeyCount => _totalCorrectKeyCount;
         public int CorrectKeyCount => _correctKeyCount;
+        public int TotalIncorrectKeyCount => _totalIncorrectKeyCount;
         public int IncorrectKeyCount => _incorrectKeyCount;
-        public float Accuracy => _correctKeyCount / _incorrectKeyCount;
+        public float Accuracy => _totalCorrectKeyCount / _totalIncorrectKeyCount;
 
 
         // Methods
@@ -56,18 +59,18 @@ namespace SpeedTypingGame.Game.Excercises
         {
             if (_text[_cursorPosition] == character)
             {
+                ++_totalCorrectKeyCount;
                 ++_correctKeyCount;
-                ++_progression;
 
-                if (_progression == Length)
+                if (_correctKeyCount == Length)
                 {
                     _game.FinishExcercise();
                 }
             }
             else
             {
+                ++_totalIncorrectKeyCount;
                 ++_incorrectKeyCount;
-                --_progression;
             }
 
             if (_cursorPosition < _text.Length - 1)
@@ -81,7 +84,14 @@ namespace SpeedTypingGame.Game.Excercises
             if (_cursorPosition > 0)
             {
                 --_cursorPosition;
-                --_progression;
+                if (_incorrectKeyCount > 0)
+                {
+                    --_incorrectKeyCount;
+                }
+                else
+                {
+                    --_correctKeyCount;
+                }
             }
         }
     }
