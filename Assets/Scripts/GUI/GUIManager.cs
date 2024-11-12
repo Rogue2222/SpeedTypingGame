@@ -4,6 +4,7 @@ using SpeedTypingGame.Game;
 using SpeedTypingGame.GUI.Main;
 using SpeedTypingGame.GUI.Overlay;
 using SpeedTypingGame.GUI.Pause;
+using SpeedTypingGame.GUI.Statistics;
 
 namespace SpeedTypingGame.GUI
 {
@@ -14,15 +15,22 @@ namespace SpeedTypingGame.GUI
         [SerializeField] private GameManager _game;
 
         [SerializeField] private MainMenu _mainMenu;
+        [SerializeField] private StatisticsMenu _statisticsMenu;
         [SerializeField] private OverlayMenu _overlayMenu;
         [SerializeField] private PauseMenu _pauseMenu;
         private Menu[] _menus;
+
+#if UNITY_EDITOR
+        [Header("Development options")]
+        [SerializeField] private bool _skipMainMenu;
+#endif
 
 
         // Properties
         public GameManager Game => _game;
 
         public MainMenu MainMenu => _mainMenu;
+        public StatisticsMenu StatisticsMenu => _statisticsMenu;
         public OverlayMenu OverlayMenu => _overlayMenu;
         public PauseMenu PauseMenu => _pauseMenu;
 
@@ -33,24 +41,10 @@ namespace SpeedTypingGame.GUI
             _menus = new Menu[]
             {
                 _mainMenu,
+                _statisticsMenu,
                 _overlayMenu,
                 _pauseMenu
             };
-        }
-
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.Escape))
-            {
-                if (!_pauseMenu.IsOpen)
-                {
-                    _pauseMenu.Open();
-                }
-                else
-                {
-                    _pauseMenu.Close();
-                }
-            }
         }
 
         private void Start()
@@ -66,6 +60,13 @@ namespace SpeedTypingGame.GUI
                     menu.Open();
                 }
             }
+
+#if UNITY_EDITOR
+            if (_skipMainMenu)
+            {
+                _mainMenu.PlayGame();
+            }
+#endif
         }
     }
 }

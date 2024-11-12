@@ -8,20 +8,18 @@ namespace SpeedTypingGame.GUI.Pause
         // Methods
         public void ResumeGame()
         {
-            Close();
-
             Game.Resume();
+            
+            Close();
         }
 
         public void OpenMainMenu()
         {
-            Close();
-
-            _gui.OverlayMenu.Close();
-
             Game.Stop();
 
             _gui.MainMenu.Open();
+            _gui.OverlayMenu.Close();
+            Close();
         }
     }
 }

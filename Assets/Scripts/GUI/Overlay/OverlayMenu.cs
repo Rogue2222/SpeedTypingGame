@@ -1,6 +1,7 @@
+using System.Text;
 using UnityEngine;
 using TMPro;
-using System.Text;
+
 using SpeedTypingGame.Game.Excercises;
 
 namespace SpeedTypingGame.GUI.Overlay
@@ -23,6 +24,11 @@ namespace SpeedTypingGame.GUI.Overlay
             _timerLabel.text = $"{((int)(Game.ElapsedTime * 100 + 0.5f)) / 100f} s";
 
             _excerciseLabel.text = FormatExcerciseText();
+
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                _gui.PauseMenu.Toggle();
+            }
         }
 
         private string FormatExcerciseText()

@@ -48,5 +48,10 @@ namespace SpeedTypingGame.GUI
                 Open();
             }
         }
+
+        public virtual void Back()
+        {
+            Close();
+        }
     }
 }

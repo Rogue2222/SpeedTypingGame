@@ -6,13 +6,23 @@ namespace SpeedTypingGame.GUI.Main
     public class MainMenu : Menu
     {
         // Methods
-        public void Play()
+        public void PlayGame()
         {
-            Close();
-
             Game.Play();
 
             _gui.OverlayMenu.Open();
+            Close();
+        }
+
+        public void OpenStatisticsMenu()
+        {
+            _gui.StatisticsMenu.Open();
+            Close();
+        }
+
+        public void ExitGame()
+        {
+            Application.Quit();
         }
     }
 }
