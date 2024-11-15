@@ -20,11 +20,6 @@ namespace SpeedTypingGame.GUI
         [SerializeField] private PauseMenu _pauseMenu;
         private Menu[] _menus;
 
-#if UNITY_EDITOR
-        [Header("Development options")]
-        [SerializeField] private bool _skipMainMenu;
-#endif
-
 
         // Properties
         public GameManager Game => _game;
@@ -60,13 +55,6 @@ namespace SpeedTypingGame.GUI
                     menu.Open();
                 }
             }
-
-#if UNITY_EDITOR
-            if (_skipMainMenu)
-            {
-                _mainMenu.PlayGame();
-            }
-#endif
         }
     }
 }

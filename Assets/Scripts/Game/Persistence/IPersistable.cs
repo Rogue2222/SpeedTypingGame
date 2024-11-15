@@ -4,8 +4,8 @@ namespace SpeedTypingGame.Game.Persistence
 {
     public interface IPersistable
     {
-        public JObject ToJSON();
+        public JToken ToJSON();
 
-        public void FromJSON(JObject json);
+        public void FromJSON(JToken json);
     }
 }

@@ -9,13 +9,15 @@ namespace SpeedTypingGame.Game.Persistence
     public abstract class PersistenceHandler : MonoBehaviour
     {
         // Fields
-        protected readonly Dictionary<char, CharacterData> _characterData = new();
-        protected readonly List<ExcerciseData> _excerciseData = new();
+        [SerializeField] protected GameManager _game;
+
+        protected readonly Dictionary<char, CharacterData> _characterDataCollection = new();
+        protected readonly List<ExcerciseData> _excerciseDataCollection = new();
 
 
         // Properties
-        public int CharacterCount { get; }
-        public int ExcerciseCount { get; }
+        public int CharacterDataCount { get; }
+        public int ExcerciseDataCount { get; }
 
 
         // Methods
@@ -31,31 +33,31 @@ namespace SpeedTypingGame.Game.Persistence
 
         public void AddCorrectCharacter(char character)
         {
-            if (_characterData.ContainsKey(character))
+            if (_characterDataCollection.ContainsKey(character))
             {
-                _characterData[character].IncreaseCorrectTypings();
+                _characterDataCollection[character].IncreaseCorrectTypings();
             }
             else
             {
-                _characterData.Add(character, new(1, 0));
+                _characterDataCollection.Add(character, new(1, 0));
             }
         }
 
         public void AddIncorrectCharacter(char character)
         {
-            if (_characterData.ContainsKey(character))
+            if (_characterDataCollection.ContainsKey(character))
             {
-                _characterData[character].IncreaseIncorrectTypings();
+                _characterDataCollection[character].IncreaseIncorrectTypings();
             }
             else
             {
-                _characterData.Add(character, new(0, 1));
+                _characterDataCollection.Add(character, new(0, 1));
             }
         }
 
-        public void AddExcercise(ExcerciseData excerciseData)
+        public void AddExcerciseData(ExcerciseData excerciseData)
         {
-            _excerciseData.Add(excerciseData);
+            _excerciseDataCollection.Add(excerciseData);
         }
 
         public abstract void Save();
@@ -64,8 +66,10 @@ namespace SpeedTypingGame.Game.Persistence
 
         public void Clear()
         {
-            _characterData.Clear();
-            _excerciseData.Clear();
+            _characterDataCollection.Clear();
+            _excerciseDataCollection.Clear();
+
+            Save();
         }
     }
 }

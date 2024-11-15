@@ -57,16 +57,16 @@ namespace SpeedTypingGame.Game.Excercises
                 new(characterData.CorrectTypings + typings, characterData.IncorrectTypings);
         }
 
-        public JObject ToJSON()
+        public JToken ToJSON()
         {
-            return new()
+            return new JObject()
             {
-                {"c", CorrectTypings },
-                {"i", IncorrectTypings }
+                { "c", CorrectTypings },
+                { "i", IncorrectTypings }
             };
         }
 
-        public void FromJSON(JObject json)
+        public void FromJSON(JToken json)
         {
             _correctTypings = json["c"].Value<int>();
             _incorrectTypings = json["i"].Value<int>();

@@ -1,17 +1,19 @@
 using System;
 using Newtonsoft.Json.Linq;
+
 using SpeedTypingGame.Game.Persistence;
 
 namespace SpeedTypingGame.Game.Excercises
 {
     [Serializable]
-    public record ExcerciseData : IPersistable
+    public class ExcerciseData : IPersistable
     {
         // Fields 
         public long _timestamp;
-        public float _duration;
-        public int _correctCharacters;
-        public int _incorrectCharacters;
+        private float _duration;
+        private int _length;
+        private int _correctCharacters;
+        private int _incorrectCharacters;
 
 
         // Properties
@@ -23,29 +25,33 @@ namespace SpeedTypingGame.Game.Excercises
 
 
         // Methods
-        public ExcerciseData(float duration, int correctCharacters, int incorrectCharacters)
+        public ExcerciseData(float duration = 0f, int length = 0,
+            int correctCharacters = 0, int incorrectCharacters = 0)
         {
             _timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
             _duration = duration;
+            _length = length;
             _correctCharacters = correctCharacters;
             _incorrectCharacters = incorrectCharacters;
         }
 
-        public JObject ToJSON()
+        public JToken ToJSON()
         {
-            return new()
+            return new JObject()
             {
-                {"t", Timestamp },
-                {"d", _duration },
-                {"c", _correctCharacters },
-                {"i", _incorrectCharacters }
+                { "t", Timestamp },
+                { "d", _duration },
+                { "l", _length },
+                { "c", _correctCharacters },
+                { "i", _incorrectCharacters }
             };
         }
 
-        public void FromJSON(JObject json)
+        public void FromJSON(JToken json)
         {
             _timestamp = json["t"].Value<long>();
             _duration = json["d"].Value<float>();
+            _length = json["l"].Value<int>();
             _correctCharacters = json["c"].Value<int>();
             _incorrectCharacters = json["i"].Value<int>();
         }

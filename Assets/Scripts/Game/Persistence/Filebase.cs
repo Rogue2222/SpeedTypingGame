@@ -15,7 +15,7 @@ namespace SpeedTypingGame.Game.Persistence
         private static string _FilePath;
 
 #if UNITY_EDITOR
-        [SerializeField] private bool _prettyPrint;
+        [SerializeField] private bool _shouldPrettyPrint;
 #endif
 
 
@@ -24,7 +24,10 @@ namespace SpeedTypingGame.Game.Persistence
         {
             _DirectoryPath = $"{Application.persistentDataPath}/Filebase";
             _FilePath = $"{_DirectoryPath}/save.json";
+        }
 
+        public override void Save()
+        {
             AddCorrectCharacter('a');
             AddCorrectCharacter('a');
             AddCorrectCharacter('a');
@@ -35,17 +38,14 @@ namespace SpeedTypingGame.Game.Persistence
             AddCorrectCharacter('b');
             AddIncorrectCharacter('b');
 
-            AddExcercise(new(24.56f, 48, 7));
-            AddExcercise(new(27.23f, 50, 5));
-            AddExcercise(new(21.78f, 46, 9));
-        }
+            AddExcerciseData(new(24.56f, 48, 7));
+            AddExcerciseData(new(27.23f, 50, 5));
+            AddExcerciseData(new(21.78f, 46, 9));
 
-        public override void Save()
-        {
             JObject saveData = new()
             {
-                { "characterData", CharacterDataToJSON() },
-                { "excerciseData", ExcerciseDataToJSON() }
+                { "characterData", CharacterDataCollectionToJSON() },
+                { "excerciseData", ExcerciseDataCollectionToJSON() }
             };
 
             if (!Directory.Exists(_DirectoryPath))
@@ -56,7 +56,7 @@ namespace SpeedTypingGame.Game.Persistence
             using StreamWriter streamWriter = new(_FilePath);
 #if UNITY_EDITOR
             streamWriter.Write(saveData.ToString(
-                _prettyPrint ? Newtonsoft.Json.Formatting.Indented : Newtonsoft.Json.Formatting.None));
+                _shouldPrettyPrint ? Newtonsoft.Json.Formatting.Indented : Newtonsoft.Json.Formatting.None));
 #else
             streamWriter.Write(saveData.ToString());
 #endif
@@ -64,29 +64,51 @@ namespace SpeedTypingGame.Game.Persistence
 
         public override void Load()
         {
-            
-        }
+            if (!File.Exists(_FilePath)) return;
 
-        private JObject CharacterDataToJSON()
-        {
-            JObject characterDataJSON = new();
-            foreach (KeyValuePair<char, CharacterData> pair in _characterData)
+            using StreamReader streamReader = new(_FilePath);
+            JObject saveData = JObject.Parse(streamReader.ReadToEnd());
+
+            _characterDataCollection.Clear();
+            JObject characterDataCollectionJSON = saveData["characterData"].Value<JObject>();
+            foreach (KeyValuePair<string, JToken> characterDataPair in characterDataCollectionJSON)
             {
-                characterDataJSON.Add(new JProperty("" + pair.Key, pair.Value.ToJSON()));
+                CharacterData characterData = new();
+                characterData.FromJSON(characterDataPair.Value);
+                _characterDataCollection.Add(characterDataPair.Key[0], characterData);
             }
 
-            return characterDataJSON;
+            _excerciseDataCollection.Clear();
+            JArray excerciseDataCollectionJSON = saveData["excerciseData"].Value<JArray>();
+            foreach (JToken excerciseDataJSON in excerciseDataCollectionJSON)
+            {
+                ExcerciseData excerciseData = new();
+                excerciseData.FromJSON(excerciseDataJSON);
+                _excerciseDataCollection.Add(excerciseData);
+            }
         }
 
-        private JArray ExcerciseDataToJSON()
+        private JObject CharacterDataCollectionToJSON()
         {
-            JArray excerciseDataJSON = new();
-            foreach (ExcerciseData excerciseData in _excerciseData)
+            JObject characterDataCollectionJSON = new();
+            foreach (KeyValuePair<char, CharacterData> characterDataPair in _characterDataCollection)
             {
-                excerciseDataJSON.Add(excerciseData.ToJSON());
+                characterDataCollectionJSON.Add(
+                    new JProperty("" + characterDataPair.Key, characterDataPair.Value.ToJSON()));
             }
 
-            return excerciseDataJSON;
+            return characterDataCollectionJSON;
+        }
+
+        private JArray ExcerciseDataCollectionToJSON()
+        {
+            JArray excerciseDataCollectionJSON = new();
+            foreach (ExcerciseData excerciseData in _excerciseDataCollection)
+            {
+                excerciseDataCollectionJSON.Add(excerciseData.ToJSON());
+            }
+
+            return excerciseDataCollectionJSON;
         }
     }
 }
