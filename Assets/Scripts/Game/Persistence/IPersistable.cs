@@ -2,10 +2,13 @@ using Newtonsoft.Json.Linq;
 
 namespace SpeedTypingGame.Game.Persistence
 {
+    /// <summary>
+    /// Describes an interface for objects that need to be persisted using JSON conversion.
+    /// </summary>
     public interface IPersistable
     {
-        public JToken ToJSON();
+        JToken ToJSON();
 
-        public void FromJSON(JToken json);
+        void FromJSON(JToken json);
     }
 }

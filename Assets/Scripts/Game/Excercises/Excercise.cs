@@ -15,9 +15,9 @@ namespace SpeedTypingGame.Game.Excercises
         private int _cursorPosition;
         private readonly List<ExcerciseChunk> _excerciseChunks;
         private int _totalCorrectKeyCount;
-        private int _correctKeyCount;
+        private int _hits;
         private int _totalIncorrectKeyCount;
-        private int _incorrectKeyCount;
+        private int _misses;
 
 
         // Properties
@@ -29,9 +29,9 @@ namespace SpeedTypingGame.Game.Excercises
         public int ChunkCount => _excerciseChunks.Count;
         public ExcerciseChunk this[int index] => _excerciseChunks[index];
         public int TotalCorrectKeyCount => _totalCorrectKeyCount;
-        public int CorrectKeyCount => _correctKeyCount;
+        public int Hits => _hits;
         public int TotalIncorrectKeyCount => _totalIncorrectKeyCount;
-        public int IncorrectKeyCount => _incorrectKeyCount;
+        public int Misses => _misses;
         public float Accuracy => _totalCorrectKeyCount / _totalIncorrectKeyCount;
 
 
@@ -60,9 +60,9 @@ namespace SpeedTypingGame.Game.Excercises
             if (_text[_cursorPosition] == character)
             {
                 ++_totalCorrectKeyCount;
-                ++_correctKeyCount;
+                ++_hits;
 
-                if (_correctKeyCount == Length)
+                if (_hits == Length)
                 {
                     _game.FinishExcercise();
                 }
@@ -70,7 +70,7 @@ namespace SpeedTypingGame.Game.Excercises
             else
             {
                 ++_totalIncorrectKeyCount;
-                ++_incorrectKeyCount;
+                ++_misses;
             }
 
             if (_cursorPosition < _text.Length - 1)
@@ -84,13 +84,13 @@ namespace SpeedTypingGame.Game.Excercises
             if (_cursorPosition > 0)
             {
                 --_cursorPosition;
-                if (_incorrectKeyCount > 0)
+                if (_misses > 0)
                 {
-                    --_incorrectKeyCount;
+                    --_misses;
                 }
                 else
                 {
-                    --_correctKeyCount;
+                    --_hits;
                 }
             }
         }

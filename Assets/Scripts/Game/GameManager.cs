@@ -13,11 +13,8 @@ namespace SpeedTypingGame.Game
         // Fields
         [SerializeField] private GUIManager _gui;
 
-        [SerializeField] private PersistenceType _persistenceType;
-        [SerializeField] private Filebase _filebase;
-        [SerializeField] private Database _database;
+        [SerializeField] private PersistenceHandler _persistence;
         [SerializeField] private Player _player;
-        private PersistenceHandler _persistenceHandler;
         private Excercise _excercise;
         private bool _isRunning;
         private bool _isPaused;
@@ -25,7 +22,7 @@ namespace SpeedTypingGame.Game
 
 
         // Properties
-        public PersistenceHandler Persistence => _persistenceHandler;
+        public PersistenceHandler Persistence => _persistence;
         public Player Player => _player;
         public Excercise Excercise => _excercise;
         public bool IsRunning => _isRunning;
@@ -34,26 +31,8 @@ namespace SpeedTypingGame.Game
 
 
         // Methods
-        private void Awake()
-        {
-            switch (_persistenceType)
-            {
-                case PersistenceType.Filebase:
-                    _persistenceHandler = _filebase;
-                    _filebase.gameObject.SetActive(true);
-                    _database.gameObject.SetActive(false);
-                    break;
-                case PersistenceType.Database:
-                    _persistenceHandler = _database;
-                    _filebase.gameObject.SetActive(false);
-                    _database.gameObject.SetActive(true);
-                    break;
-            }
-        }
-
         private void Update()
         {
-            
             if (Input.GetKeyDown(KeyCode.Escape))
             {
                 if (!_isPaused)

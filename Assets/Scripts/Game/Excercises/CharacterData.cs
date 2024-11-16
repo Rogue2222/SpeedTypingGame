@@ -9,67 +9,67 @@ namespace SpeedTypingGame.Game.Excercises
     public class CharacterData : IPersistable
     {
         // Fields
-        private int _correctTypings;
-        private int _incorrectTypings;
+        private int _hits;
+        private int _misses;
 
 
         // Properties
-        public int CorrectTypings => _correctTypings;
-        public int IncorrectTypings => _incorrectTypings;
-        public int TotalTypings => _correctTypings + _incorrectTypings;
-        public float Accuracy => _correctTypings / TotalTypings;
+        public int Hits => _hits;
+        public int Misses => _misses;
+        public int Total => _hits + _misses;
+        public float Accuracy => _hits / Total;
         
 
         // Methods
         public CharacterData(int correctTypings = 0, int incorrectTypings = 0)
         {
-            _correctTypings = correctTypings;
-            _incorrectTypings = incorrectTypings;
+            _hits = correctTypings;
+            _misses = incorrectTypings;
         }
 
         public void Clear()
         {
-            _correctTypings = 0;
-            _incorrectTypings = 0;
+            _hits = 0;
+            _misses = 0;
         }
 
         public void IncreaseCorrectTypings(int amount = 1)
         {
-            _correctTypings += amount;
+            _hits += amount;
         }
 
         public void IncreaseIncorrectTypings(int amount = 1)
         {
-            _incorrectTypings += amount;
+            _misses += amount;
         }
 
         public static CharacterData operator +(CharacterData characterData, int typings)
         {
             return typings >= 0 ?
-                new(characterData.CorrectTypings + typings, characterData.IncorrectTypings) :
-                new(characterData.CorrectTypings, characterData.IncorrectTypings + typings);
+                new(characterData.Hits + typings, characterData.Misses) :
+                new(characterData.Hits, characterData.Misses + Math.Abs(typings));
         }
 
         public static CharacterData operator -(CharacterData characterData, int typings)
         {
             return typings >= 0 ?
-                new(characterData.CorrectTypings, characterData.IncorrectTypings + typings) :
-                new(characterData.CorrectTypings + typings, characterData.IncorrectTypings);
+                new(characterData.Hits, characterData.Misses + typings) :
+                new(characterData.Hits + Math.Abs(typings), characterData.Misses);
         }
 
         public JToken ToJSON()
         {
             return new JObject()
             {
-                { "c", CorrectTypings },
-                { "i", IncorrectTypings }
+                { "h", _hits },
+                { "m", _misses }
             };
         }
 
         public void FromJSON(JToken json)
         {
-            _correctTypings = json["c"].Value<int>();
-            _incorrectTypings = json["i"].Value<int>();
+            _hits = json["h"].Value<int>();
+            _misses = json["m"].Value<int>();
         }
     }
 }
