@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.IO;
+using System.Diagnostics;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
 
 using SpeedTypingGame.Game.Excercises;
-using System.Diagnostics;
 
 namespace SpeedTypingGame.Game.Persistence
 {
@@ -158,12 +158,12 @@ namespace SpeedTypingGame.Game.Persistence
             }
         }
 
-        public void AddCorrectCharacter(char character)
+        public void AddCharacterHit(char character)
         {
             ChangeCharacterData(character, 1);
         }
 
-        public void AddIncorrectCharacter(char character)
+        public void AddCharacterMiss(char character)
         {
             ChangeCharacterData(character, -1);
         }

@@ -21,10 +21,10 @@ namespace SpeedTypingGame.Game.Excercises
         
 
         // Methods
-        public CharacterData(int correctTypings = 0, int incorrectTypings = 0)
+        public CharacterData(int hits = 0, int misses = 0)
         {
-            _hits = correctTypings;
-            _misses = incorrectTypings;
+            _hits = hits;
+            _misses = misses;
         }
 
         public void Clear()
@@ -43,18 +43,18 @@ namespace SpeedTypingGame.Game.Excercises
             _misses += amount;
         }
 
-        public static CharacterData operator +(CharacterData characterData, int typings)
+        public static CharacterData operator +(CharacterData characterData, int hits)
         {
-            return typings >= 0 ?
-                new(characterData.Hits + typings, characterData.Misses) :
-                new(characterData.Hits, characterData.Misses + Math.Abs(typings));
+            return hits >= 0 ?
+                new(characterData.Hits + hits, characterData.Misses) :
+                new(characterData.Hits, characterData.Misses + Math.Abs(hits));
         }
 
-        public static CharacterData operator -(CharacterData characterData, int typings)
+        public static CharacterData operator -(CharacterData characterData, int misses)
         {
-            return typings >= 0 ?
-                new(characterData.Hits, characterData.Misses + typings) :
-                new(characterData.Hits + Math.Abs(typings), characterData.Misses);
+            return misses >= 0 ?
+                new(characterData.Hits, characterData.Misses + misses) :
+                new(characterData.Hits + Math.Abs(misses), characterData.Misses);
         }
 
         public JToken ToJSON()
