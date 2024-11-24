@@ -1,8 +1,6 @@
-using UnityEngine;
-
-using SpeedTypingGame.Game.Players;
 using SpeedTypingGame.Game.Excercises;
 using SpeedTypingGame.GUI;
+using UnityEngine;
 
 namespace SpeedTypingGame.Game
 {
@@ -10,38 +8,44 @@ namespace SpeedTypingGame.Game
     public class GameManager : MonoBehaviour
     {
         // Fields
-        [SerializeField] private GUIManager _gui;
+        [SerializeField] public GUIManager _gui;
 
-        [SerializeField] private Player _player;
-        private Excercise _excercise;
+        [SerializeField] private InputManager _inputManager;
+        
+        private Exercise _exercise;
         private bool _isRunning;
         private bool _isPaused;
         private float _elapsedTime;
 
 
         // Properties
-        public Player Player => _player;
-        public Excercise Excercise => _excercise;
+        public Exercise Exercise => _exercise;
         public bool IsRunning => _isRunning;
         public bool IsPaused => _isPaused;
         public float ElapsedTime => _elapsedTime;
 
 
         // Methods
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.Escape))
-            {
+        private void Update() {
+            if (_inputManager.NoInput()) return;
+            
+            if (_inputManager.PauseKeyPressed()) {
                 if (!_isPaused)
                 {
                     Pause();
                 }
                 else
                 {
-                    Resume();
+                    if (_isRunning) {
+                        Resume();
+                    }
                 }
             }
 
+
+        }
+
+        private void FixedUpdate() {
             if (_isRunning && !_isPaused)
             {
                 _elapsedTime += Time.deltaTime;
@@ -54,16 +58,14 @@ namespace SpeedTypingGame.Game
             _isPaused = false;
             _elapsedTime = 0f;
 
-            StartExcercise();
+            LoadNewExercise();
         }
 
-        public void Pause()
-        {
+        public void Pause() {
             _isPaused = true;
         }
 
-        public void Resume()
-        {
+        public void Resume() {
             _isPaused = false;
         }
         public void Stop()
@@ -72,18 +74,22 @@ namespace SpeedTypingGame.Game
             _isPaused = false;
         }
 
-        public void StartExcercise()
-        {
-            _excercise = new(this);
-            _player.StartExcercise();
+        public void StartExercise() {
+            _elapsedTime = 0f;
+            _isRunning = true;
+            Resume();
+
         }
 
-        public void FinishExcercise()
+        public void LoadNewExercise()
         {
-            _player.FinishExcercise();
-            
-            _elapsedTime = 0f;
-            StartExcercise();
+            _exercise = new(this);
+        }
+
+        public void FinishExercise()
+        {
+            LoadNewExercise();
+            Stop();
         }
     }
 }

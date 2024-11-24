@@ -10,7 +10,7 @@ namespace SpeedTypingGame.Game.Excercises
         }
 
         // Fields
-        private Excercise _excercise;
+        private Exercise _exercise;
 
         public ChunkType Type;
         private int _startIndex;
@@ -23,17 +23,17 @@ namespace SpeedTypingGame.Game.Excercises
         public bool IsWrong => Type == ChunkType.Wrong;
         public int StartIndex => _startIndex;
         public int EndIndex => _endIndex;
-        public string Text => _excercise.Text.Substring(_startIndex, _excercise.Length - _endIndex);
+        public string Text => _exercise.Text.Substring(_startIndex, _exercise.Length - _endIndex);
 
 
         // Methods
-        public ExcerciseChunk(Excercise excercise, ChunkType type = ChunkType.Neutral)
+        public ExcerciseChunk(Exercise exercise, ChunkType type = ChunkType.Neutral)
         {
-            _excercise = excercise;
+            _exercise = exercise;
 
             Type = type;
-            _startIndex = excercise.CursorPosition;
-            _endIndex = excercise.Length - 1;
+            _startIndex = exercise.CursorPosition;
+            _endIndex = exercise.Length - 1;
         }
     }
 }
