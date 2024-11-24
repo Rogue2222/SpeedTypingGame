@@ -1,8 +1,8 @@
+using System;
 using System.Text;
-using UnityEngine;
+using SpeedTypingGame.Game;
 using TMPro;
-
-using SpeedTypingGame.Game.Excercises;
+using UnityEngine;
 
 namespace SpeedTypingGame.GUI.Overlay
 {
@@ -15,68 +15,120 @@ namespace SpeedTypingGame.GUI.Overlay
         private const string _WrongTextColor = "red";
 
         [SerializeField] private TextMeshProUGUI _timerLabel;
-        [SerializeField] private TextMeshProUGUI _excerciseLabel;
+        [SerializeField] private TextMeshProUGUI _exerciseLabel;
+        [SerializeField] private TMP_InputField _inputField;
+        [SerializeField] private InputManager _inputManager;
+        
+        private void Start() {
+            _inputField.onValueChanged.AddListener(s => Game.Exercise.HandleInputChange(s));
+            _inputField.onValueChanged.AddListener(s => _exerciseLabel.text = FormatExerciseText());
 
+            _inputField.restoreOriginalTextOnEscape = false;
+            _inputField.onFocusSelectAll = false;
+            _exerciseLabel.text = FormatExerciseText();
+        }
 
         // Methods
         private void Update()
         {
-            _timerLabel.text = $"{((int)(Game.ElapsedTime * 100 + 0.5f)) / 100f} s";
+            _timerLabel.text = $"{(int)(Game.ElapsedTime * 100 + 0.5f) / 100f} s";
 
-            _excerciseLabel.text = FormatExcerciseText();
+            // So the input box always in focus
+            _inputField.Select();
 
-            if (Input.GetKeyDown(KeyCode.Escape))
+            if (_inputManager.PauseKeyPressed())
             {
                 _gui.PauseMenu.Toggle();
             }
         }
 
-        private string FormatExcerciseText()
+        private string FormatExerciseText()
         {
-            string playerText = Game.Player.Text;
-            string excerciseText = Game.Excercise.Text;
+            // Get the current input and current word
+            string[] words = Game.Exercise.ExerciseWords.ToArray();
+            if (words.Length == 0) return string.Empty;
+            string input = Game.Exercise.CurrentInput;
+            int currentWordIndex = Game.Exercise.CurrentWordIndex;
+            string currentWord = words[currentWordIndex];
 
-            if (string.IsNullOrEmpty(playerText))
+            // StringBuilder to construct the formatted exercise text
+            StringBuilder formattedText = new();
+            
+            // Words that are done already
+            if (currentWordIndex > 0 && currentWordIndex < words.Length) {
+                formattedText.Append(FormatExerciseChunkText(string.Join(" ", words[..currentWordIndex]), true));
+                formattedText.Append(" ");
+            }
+                
+            // Format the current word
+            if (string.IsNullOrEmpty(input))
             {
-                return $"<color={_NeutralTextColor}>{excerciseText}</color>";
+                // Neutral for an empty input
+                formattedText.Append($"<color={_NeutralTextColor}>{currentWord}</color>");
+            }
+            else
+            {
+                // bool isCorrect = currentWord.StartsWith(input);
+                // formattedText.Append(FormatExerciseChunkText(currentWord.Substring(0, Math.Min(input.Length, currentWord.Length)), isCorrect));
+                formattedText.Append(FormatWord(currentWord, input));
+                
+                // natural part cuz it's not written yet
+                if (input.Length < currentWord.Length) 
+                    formattedText.Append($"<color={_NeutralTextColor}>" +
+                                         $"{currentWord.Substring(input.Length, currentWord.Length - input.Length)}</color>");
+            }
+            formattedText.Append(" ");
+
+            // Text after the current word: all neutral
+            formattedText.Append($"<color={_NeutralTextColor}>{string.Join(" ", words[(currentWordIndex + 1)../*words.Length*/])}</color>");
+
+            return formattedText.ToString();
+        }
+
+        private string FormatWord(string word, string input)
+        {
+            if (string.IsNullOrEmpty(input))
+            {
+                return $"<color={_NeutralTextColor}>{word}</color>";
             }
 
-            StringBuilder excerciseTextBuilder = new(Excercise.DefaultLength * 2);
+            StringBuilder textBuilder = new();
 
-            bool isExcerciseChunkCorrect = playerText[0] == excerciseText[0];
-            StringBuilder excerciseChunkTextBuilder = new("" + excerciseText[0], Excercise.DefaultLength * 2);
+            bool isChunkCorrect = input[0] == word[0];
+            StringBuilder chunkTextBuilder = new("" + word[0]);
             
-            for (int i = 1; i < playerText.Length; ++i)
+            for (int i = 1; i < Math.Min(input.Length, word.Length); ++i)
             {
-                if (playerText[i] == excerciseText[i] == isExcerciseChunkCorrect)
+                if (input[i] == word[i] == isChunkCorrect)
                 {
-                    excerciseChunkTextBuilder.Append(excerciseText[i]);
+                    chunkTextBuilder.Append(word[i]);
                 }
                 else
                 {
-                    excerciseTextBuilder.Append(FormatExcerciseChunkText(
-                        excerciseChunkTextBuilder.ToString(), isExcerciseChunkCorrect));
+                    textBuilder.Append(FormatExerciseChunkText(
+                        chunkTextBuilder.ToString(), isChunkCorrect));
 
-                    isExcerciseChunkCorrect = !isExcerciseChunkCorrect;
-                    excerciseChunkTextBuilder.Clear();
-                    excerciseChunkTextBuilder.Append(excerciseText[i]);
+                    isChunkCorrect = !isChunkCorrect;
+                    chunkTextBuilder.Clear();
+                    chunkTextBuilder.Append(word[i]);
                 }
             }
 
-            excerciseTextBuilder.Append(FormatExcerciseChunkText(
-                excerciseChunkTextBuilder.ToString(), isExcerciseChunkCorrect));
+            textBuilder.Append(FormatExerciseChunkText(
+                chunkTextBuilder.ToString(), isChunkCorrect));
 
-            excerciseTextBuilder
-                .Append($"<color={_NeutralTextColor}>")
-                .Append(excerciseText.Substring(playerText.Length, excerciseText.Length - playerText.Length))
-                .Append("</color>");
-
-            return excerciseTextBuilder.ToString();
+            return textBuilder.ToString();
         }
 
-        private string FormatExcerciseChunkText(string chunkText, bool isCorrect)
+        private string FormatExerciseChunkText(string chunkText, bool isCorrect)
         {
             return $"<color={(isCorrect ? _CorrectTextColor : _WrongTextColor)}>{chunkText}</color>";
         }
+
+        public void ClearInputField() {
+            _inputField.text = "";
+            FormatExerciseText();
+        }
+        
     }
 }

@@ -8,7 +8,7 @@ namespace SpeedTypingGame.GUI.Main
         // Methods
         public void PlayGame()
         {
-            Game.Play();
+            Game.LoadNewExercise();
 
             _gui.OverlayMenu.Open();
             Close();
