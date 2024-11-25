@@ -26,6 +26,7 @@ namespace SpeedTypingGame.Game.Persistence
 
         [SerializeField] private GameManager _game;
 #if UNITY_EDITOR
+        [Header("Development options")]
         [SerializeField] private bool _shouldPrettyPrint;
 #endif
 
@@ -69,6 +70,11 @@ namespace SpeedTypingGame.Game.Persistence
 
         private void OnApplicationQuit()
         {
+            _CharacterDataCollection.Clear();
+            _CharacterDataCollectionJSON = new();
+            _ExcerciseDataCollection.Clear();
+            _ExcerciseDataCollectionJSON = new();
+
             Save();
         }
 
@@ -78,6 +84,7 @@ namespace SpeedTypingGame.Game.Persistence
 
             JObject saveData = new()
             {
+                { "version", Application.version },
                 { "characterData", _CharacterDataCollectionJSON },
                 { "excerciseData", _ExcerciseDataCollectionJSON }
             };
@@ -98,14 +105,13 @@ namespace SpeedTypingGame.Game.Persistence
 
         public void Load()
         {
+            Stopwatch stopwatch = Stopwatch.StartNew();
 #if UNITY_WEBGL
             if (!PlayerPrefs.HasKey("save"))
             {
                 Log("No save data was found, nothing got loaded");
                 return;
             }
-
-            Stopwatch stopwatch = Stopwatch.StartNew();
 
             JObject saveData = JObject.Parse(PlayerPrefs.GetString("save"));
 #else
@@ -115,11 +121,11 @@ namespace SpeedTypingGame.Game.Persistence
                 return;
             }
 
-            Stopwatch stopwatch = Stopwatch.StartNew();
-
             using StreamReader streamReader = new(_FilePath);
             JObject saveData = JObject.Parse(streamReader.ReadToEnd());
 #endif
+            string version = saveData["version"].Value<string>();
+
             _CharacterDataCollection.Clear();
             _CharacterDataCollectionJSON = saveData["characterData"].Value<JObject>();
             foreach (KeyValuePair<string, JToken> characterDataPair in _CharacterDataCollectionJSON)
@@ -158,14 +164,14 @@ namespace SpeedTypingGame.Game.Persistence
             }
         }
 
-        public void AddCharacterHit(char character)
+        public void AddCharacterHit(char character, int amount = 1)
         {
-            ChangeCharacterData(character, 1);
+            ChangeCharacterData(character, amount);
         }
 
-        public void AddCharacterMiss(char character)
+        public void AddCharacterMiss(char character, int amount = -1)
         {
-            ChangeCharacterData(character, -1);
+            ChangeCharacterData(character, amount);
         }
 
         public void AddExcerciseData(ExcerciseData excerciseData)
