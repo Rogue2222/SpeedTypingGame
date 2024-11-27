@@ -11,8 +11,8 @@ namespace SpeedTypingGame.Game
         // Fields
         [SerializeField] public GUIManager _gui;
 
-        [SerializeField] private PersistenceHandler _persistence;
         [SerializeField] private InputManager _inputManager;
+        [SerializeField] private PersistenceHandler _persistence;
         
         private Exercise _exercise;
         private bool _isRunning;
@@ -21,6 +21,7 @@ namespace SpeedTypingGame.Game
 
 
         // Properties
+        public InputManager Input => _inputManager;
         public PersistenceHandler Persistence => _persistence;
         public Exercise Exercise => _exercise;
         public bool IsRunning => _isRunning;

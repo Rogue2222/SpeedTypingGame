@@ -54,6 +54,9 @@ namespace SpeedTypingGame.Game.Persistence
 
 
         // Methods
+        /// <summary>
+        /// Sets the file path and initializes the static data containers.
+        /// </summary>
         private void Awake()
         {
             _FilePath = $"{Application.persistentDataPath}/save.json";
@@ -63,11 +66,17 @@ namespace SpeedTypingGame.Game.Persistence
             _ExcerciseDataCollectionJSON = new();
     }
 
+        /// <summary>
+        /// Loads the save data every time the application starts.
+        /// </summary>
         private void Start()
         {
             Load();
         }
 
+        /// <summary>
+        /// Clears data from static variables and saves the save data every time the user quits the application.
+        /// </summary>
         private void OnApplicationQuit()
         {
             _CharacterDataCollection.Clear();
@@ -78,6 +87,9 @@ namespace SpeedTypingGame.Game.Persistence
             Save();
         }
 
+        /// <summary>
+        /// Writes the save data into the file specified at <c>_FilePath</c>.
+        /// </summary>
         public void Save()
         {
             Stopwatch stopwatch = Stopwatch.StartNew();
@@ -103,6 +115,9 @@ namespace SpeedTypingGame.Game.Persistence
                 $"and {_ExcerciseDataCollection.Count} excercises) in {stopwatch.ElapsedMilliseconds} ms");
         }
 
+        /// <summary>
+        /// Loads save data from the file specified at <c>_FilePath</c>.
+        /// </summary>
         public void Load()
         {
             Stopwatch stopwatch = Stopwatch.StartNew();
@@ -149,6 +164,11 @@ namespace SpeedTypingGame.Game.Persistence
                 $"and {_ExcerciseDataCollection.Count} excercises) in {stopwatch.ElapsedMilliseconds} ms");
         }
 
+        /// <summary>
+        /// Changes how many times a character was typed correctly or incorrectly by a given amount.
+        /// </summary>
+        /// <param name="character">The character to change data for.</param>
+        /// <param name="amount">The amount to change the character's data with.</param>
         private void ChangeCharacterData(char character, int amount)
         {
             if (_CharacterDataCollection.ContainsKey(character))
@@ -164,16 +184,33 @@ namespace SpeedTypingGame.Game.Persistence
             }
         }
 
+        /// <summary>
+        /// Adds a correct character typing (aka a hit) to the player's data.
+        /// Designed to be used after typing a character.
+        /// </summary>
+        /// <param name="character">The character that was correctly typed</param>
+        /// <param name="amount">The number of times the character was typed correctly, 1 by default.</param>
         public void AddCharacterHit(char character, int amount = 1)
         {
             ChangeCharacterData(character, amount);
         }
 
+        /// <summary>
+        /// Adds an  inorrect character typing (aka a miss) to the player's data.
+        /// Designed to be used after typing a character
+        /// but can be used for a bulk update by specifying the <c>amount</c> parameter.
+        /// </summary>
+        /// <param name="character">The character that was incorrectly typed</param>
+        /// <param name="amount">The number of times the character was typed incorrectly, 1 by default.</param>
         public void AddCharacterMiss(char character, int amount = -1)
         {
             ChangeCharacterData(character, amount);
         }
 
+        /// <summary>
+        /// Adds all the data from excercise to the player's data.
+        /// </summary>
+        /// <param name="excerciseData">The data of the excercise to be added.</param>
         public void AddExcerciseData(ExerciseData excerciseData)
         {
             _ExcerciseDataCollection.Add(excerciseData);
@@ -182,6 +219,10 @@ namespace SpeedTypingGame.Game.Persistence
             Save();
         }
 
+        /// <summary>
+        /// Clears all the player data and also saves the shocking emptiness that remains.
+        /// Mainly to be used for debugging purposes or as an additional progress reset feature.
+        /// </summary>
         public void Clear()
         {
             Stopwatch stopwatch = Stopwatch.StartNew();
@@ -198,6 +239,11 @@ namespace SpeedTypingGame.Game.Persistence
             Save();
         }
 
+        /// <summary>
+        /// Logs the given, persistence related message to the console using the
+        /// [<c>_DebugGroup</c>] message format.
+        /// </summary>
+        /// <param name="message">The message to be logged.</param>
         private void Log(string message)
         {
             Debug2.Log(message, _DebugGroup);

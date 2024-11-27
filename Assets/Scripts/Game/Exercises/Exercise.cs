@@ -16,9 +16,7 @@ namespace SpeedTypingGame.Game.Exercises
         private readonly string _text;
         private int _cursorPosition;
         private readonly List<string> _exerciseWords;
-        private int _totalCorrectKeyCount;
         private int _hits;
-        private int _totalIncorrectKeyCount;
         private int _misses;
         private int _currentWordIndex = 0;
 
@@ -33,11 +31,8 @@ namespace SpeedTypingGame.Game.Exercises
         public string CurrentWord => this[_currentWordIndex];
         public List<string> ExerciseWords => _exerciseWords;
         public int CurrentWordIndex => _currentWordIndex;
-        public int TotalCorrectKeyCount => _totalCorrectKeyCount;
         public int Hits => _hits;
-        public int TotalIncorrectKeyCount => _totalIncorrectKeyCount;
         public int Misses => _misses;
-        public float Accuracy => _totalCorrectKeyCount / _totalIncorrectKeyCount;
         public string CurrentInput { get; private set; }
 
         // Methods
@@ -82,46 +77,6 @@ namespace SpeedTypingGame.Game.Exercises
             if (input.EndsWith(" ") && input.Length > 2 && string.Equals(this[_currentWordIndex], input[..^1])) {
                 _currentWordIndex++;
                 _game._gui.OverlayMenu.ClearInputField();
-            }
-        }
-
-        public void TypeCharacter(char character)
-        {
-            if (_text[_cursorPosition] == character)
-            {
-                ++_totalCorrectKeyCount;
-                ++_hits;
-
-                if (_hits == Length)
-                {
-                    _game.FinishExercise();
-                }
-            }
-            else
-            {
-                ++_totalIncorrectKeyCount;
-                ++_misses;
-            }
-
-            if (_cursorPosition < _text.Length - 1)
-            {
-                ++_cursorPosition;
-            }
-        }
-
-        public void HitBackspace()
-        {
-            if (_cursorPosition > 0)
-            {
-                --_cursorPosition;
-                if (_misses > 0)
-                {
-                    --_misses;
-                }
-                else
-                {
-                    --_hits;
-                }
             }
         }
     }

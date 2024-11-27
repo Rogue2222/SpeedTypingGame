@@ -129,6 +129,5 @@ namespace SpeedTypingGame.GUI.Overlay
             _inputField.text = "";
             FormatExerciseText();
         }
-        
     }
 }
