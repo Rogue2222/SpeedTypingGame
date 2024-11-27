@@ -5,7 +5,24 @@ namespace SpeedTypingGame.GUI.Main
     [AddComponentMenu("SpeedTypingGame/GUI/Main/Main menu")]
     public class MainMenu : Menu
     {
+        // Fields
+#if UNITY_EDITOR
+        [Header("Development options")]
+        [SerializeField] private bool _shouldSkip;
+#endif
+
+
         // Methods
+#if UNITY_EDITOR
+        private void Start()
+        {
+            if (_shouldSkip)
+            {
+                PlayGame();
+            }
+        }
+#endif
+
         public void PlayGame()
         {
             Game.LoadNewExercise();

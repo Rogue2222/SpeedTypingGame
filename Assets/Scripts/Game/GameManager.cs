@@ -1,5 +1,6 @@
 using System;
-using SpeedTypingGame.Game.Excercises;
+using SpeedTypingGame.Game.Exercises;
+using SpeedTypingGame.Game.Persistence;
 using SpeedTypingGame.GUI;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,6 +14,7 @@ namespace SpeedTypingGame.Game
         [SerializeField] public GUIManager _gui;
 
         [SerializeField] private InputManager _inputManager;
+        [SerializeField] private PersistenceHandler _persistence;
         
         private Exercise _exercise;
         private bool _isRunning;
@@ -21,6 +23,8 @@ namespace SpeedTypingGame.Game
 
 
         // Properties
+        public InputManager Input => _inputManager;
+        public PersistenceHandler Persistence => _persistence;
         public Exercise Exercise => _exercise;
         public bool IsRunning => _isRunning;
         public bool IsPaused => _isPaused;
