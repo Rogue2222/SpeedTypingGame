@@ -24,7 +24,7 @@ namespace SpeedTypingGame.Game {
         }
 
         public bool NewExercise() {  // CTRL + N?
-            throw new NotImplementedException();
+            return Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.N);
         }        
     }
 }

@@ -1,7 +1,9 @@
+using System;
+using SpeedTypingGame.Game.Excercises;
 using SpeedTypingGame.Game.Persistence;
-using SpeedTypingGame.Game.Exercises;
 using SpeedTypingGame.GUI;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace SpeedTypingGame.Game
 {
@@ -28,9 +30,9 @@ namespace SpeedTypingGame.Game
         public bool IsPaused => _isPaused;
         public float ElapsedTime => _elapsedTime;
 
-
         // Methods
-        private void Update() {
+        private void Update()
+        {
             if (_inputManager.NoInput()) return;
             
             if (_inputManager.PauseKeyPressed()) {
@@ -46,7 +48,11 @@ namespace SpeedTypingGame.Game
                 }
             }
 
-
+            if (_inputManager.NewExercise())
+            {
+                FinishExercise();
+                _gui.OverlayMenu.ClearInputField();
+            }
         }
 
         private void FixedUpdate() {
