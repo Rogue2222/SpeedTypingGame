@@ -3,7 +3,7 @@ using Newtonsoft.Json.Linq;
 
 using SpeedTypingGame.Game.Persistence;
 
-namespace SpeedTypingGame.Game.Excercises
+namespace SpeedTypingGame.Game.Exercises
 {
     [Serializable]
     public class CharacterData : IPersistable

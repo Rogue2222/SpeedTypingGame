@@ -3,10 +3,10 @@ using Newtonsoft.Json.Linq;
 
 using SpeedTypingGame.Game.Persistence;
 
-namespace SpeedTypingGame.Game.Excercises
+namespace SpeedTypingGame.Game.Exercises
 {
     [Serializable]
-    public class ExcerciseData : IPersistable
+    public class ExerciseData : IPersistable
     {
         // Fields 
         public long _timestamp;
@@ -25,10 +25,10 @@ namespace SpeedTypingGame.Game.Excercises
 
 
         // Methods
-        public ExcerciseData(float duration, Excercise excercise) :
-            this(duration, excercise.Length, excercise.Hits, excercise.Misses) { }
+        public ExerciseData(float duration, Exercise exercise) :
+            this(duration, exercise.Length, exercise.Hits, exercise.Misses) { }
 
-        public ExcerciseData(float duration = 0f, int length = 0, int hits = 0, int misses = 0)
+        public ExerciseData(float duration = 0f, int length = 0, int hits = 0, int misses = 0)
         {
             _timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
             _duration = duration;

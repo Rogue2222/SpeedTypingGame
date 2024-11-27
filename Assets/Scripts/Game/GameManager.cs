@@ -1,5 +1,5 @@
 using SpeedTypingGame.Game.Persistence;
-using SpeedTypingGame.Game.Excercises;
+using SpeedTypingGame.Game.Exercises;
 using SpeedTypingGame.GUI;
 using UnityEngine;
 

@@ -1,4 +1,4 @@
-namespace SpeedTypingGame.Game.Excercises
+namespace SpeedTypingGame.Game.Exercises
 {
     public class ExcerciseChunk
     {

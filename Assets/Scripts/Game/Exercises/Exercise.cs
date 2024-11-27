@@ -1,10 +1,9 @@
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace SpeedTypingGame.Game.Excercises
+namespace SpeedTypingGame.Game.Exercises
 {
     public class Exercise
     {
@@ -18,9 +17,9 @@ namespace SpeedTypingGame.Game.Excercises
         private int _cursorPosition;
         private readonly List<string> _exerciseWords;
         private int _totalCorrectKeyCount;
-        private int _correctKeyCount;
+        private int _hits;
         private int _totalIncorrectKeyCount;
-        private int _incorrectKeyCount;
+        private int _misses;
         private int _currentWordIndex = 0;
 
         // Properties
@@ -35,9 +34,9 @@ namespace SpeedTypingGame.Game.Excercises
         public List<string> ExerciseWords => _exerciseWords;
         public int CurrentWordIndex => _currentWordIndex;
         public int TotalCorrectKeyCount => _totalCorrectKeyCount;
-        public int CorrectKeyCount => _correctKeyCount;
+        public int Hits => _hits;
         public int TotalIncorrectKeyCount => _totalIncorrectKeyCount;
-        public int IncorrectKeyCount => _incorrectKeyCount;
+        public int Misses => _misses;
         public float Accuracy => _totalCorrectKeyCount / _totalIncorrectKeyCount;
         public string CurrentInput { get; private set; }
 
@@ -91,9 +90,9 @@ namespace SpeedTypingGame.Game.Excercises
             if (_text[_cursorPosition] == character)
             {
                 ++_totalCorrectKeyCount;
-                ++_correctKeyCount;
+                ++_hits;
 
-                if (_correctKeyCount == Length)
+                if (_hits == Length)
                 {
                     _game.FinishExercise();
                 }
@@ -101,7 +100,7 @@ namespace SpeedTypingGame.Game.Excercises
             else
             {
                 ++_totalIncorrectKeyCount;
-                ++_incorrectKeyCount;
+                ++_misses;
             }
 
             if (_cursorPosition < _text.Length - 1)
@@ -115,13 +114,13 @@ namespace SpeedTypingGame.Game.Excercises
             if (_cursorPosition > 0)
             {
                 --_cursorPosition;
-                if (_incorrectKeyCount > 0)
+                if (_misses > 0)
                 {
-                    --_incorrectKeyCount;
+                    --_misses;
                 }
                 else
                 {
-                    --_correctKeyCount;
+                    --_hits;
                 }
             }
         }

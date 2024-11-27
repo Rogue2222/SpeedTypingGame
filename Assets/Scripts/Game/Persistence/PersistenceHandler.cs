@@ -6,7 +6,7 @@ using System.Diagnostics;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
 
-using SpeedTypingGame.Game.Excercises;
+using SpeedTypingGame.Game.Exercises;
 
 namespace SpeedTypingGame.Game.Persistence
 {
@@ -21,7 +21,7 @@ namespace SpeedTypingGame.Game.Persistence
         private static string _FilePath;
         private static readonly Dictionary<char, CharacterData> _CharacterDataCollection = new();
         private static JObject _CharacterDataCollectionJSON = new();
-        private static readonly List<ExcerciseData> _ExcerciseDataCollection = new();
+        private static readonly List<ExerciseData> _ExcerciseDataCollection = new();
         private static JArray _ExcerciseDataCollectionJSON = new();
 
         [SerializeField] private GameManager _game;
@@ -39,8 +39,8 @@ namespace SpeedTypingGame.Game.Persistence
             _CharacterDataCollection.Select(characterDataPair =>
             new Tuple<char, CharacterData>(characterDataPair.Key, characterDataPair.Value)).ToList();
         public int ExcerciseDataCount => _ExcerciseDataCollection.Count;
-        public ExcerciseData this[int index] => _ExcerciseDataCollection[index];
-        public List<ExcerciseData> ExcerciseData => new(_ExcerciseDataCollection);
+        public ExerciseData this[int index] => _ExcerciseDataCollection[index];
+        public List<ExerciseData> ExcerciseData => new(_ExcerciseDataCollection);
         public List<DateTime> Timestamps =>
             _ExcerciseDataCollection.Select(excerciseData => excerciseData.Timestamp).ToList();
         public List<float> Durations =>
@@ -139,7 +139,7 @@ namespace SpeedTypingGame.Game.Persistence
             _ExcerciseDataCollectionJSON = saveData["excerciseData"].Value<JArray>();
             foreach (JToken excerciseDataJSON in _ExcerciseDataCollectionJSON)
             {
-                ExcerciseData excerciseData = new();
+                ExerciseData excerciseData = new();
                 excerciseData.FromJSON(excerciseDataJSON);
                 _ExcerciseDataCollection.Add(excerciseData);
             }
@@ -174,7 +174,7 @@ namespace SpeedTypingGame.Game.Persistence
             ChangeCharacterData(character, amount);
         }
 
-        public void AddExcerciseData(ExcerciseData excerciseData)
+        public void AddExcerciseData(ExerciseData excerciseData)
         {
             _ExcerciseDataCollection.Add(excerciseData);
             _ExcerciseDataCollectionJSON.Add(excerciseData.ToJSON());

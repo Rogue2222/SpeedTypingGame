@@ -1511,7 +1511,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _gui: {fileID: 730317865}
   _timerLabel: {fileID: 2100336968}
-  _excerciseLabel: {fileID: 768649963}
+  _exerciseLabel: {fileID: 0}
+  _inputField: {fileID: 0}
+  _inputManager: {fileID: 0}
 --- !u!1001 &1297064055
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1657,7 +1659,7 @@ GameObject:
   - component: {fileID: 1343208973}
   - component: {fileID: 1343208974}
   m_Layer: 0
-  m_Name: Player
+  m_Name: Input manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1687,10 +1689,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1343208972}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d104e65d3fe34654e9c111a2acb99106, type: 3}
+  m_Script: {fileID: 11500000, guid: 097f7fdc908e8bd4dbb88cc91fffdc94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _game: {fileID: 2101463911}
 --- !u!1 &1430506709
 GameObject:
   m_ObjectHideFlags: 0
@@ -2734,7 +2735,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _gui: {fileID: 730317865}
   _persistence: {fileID: 949856663}
-  _player: {fileID: 1343208974}
+  _inputManager: {fileID: 1343208974}
 --- !u!4 &2101463912
 Transform:
   m_ObjectHideFlags: 0
