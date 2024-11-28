@@ -3409,7 +3409,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee1698e157e7f1d4caa4d3d112b0235e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gui: {fileID: 730317865}
+  gui: {fileID: 730317865}
   _inputManager: {fileID: 1331882755}
   _persistence: {fileID: 385533704}
 --- !u!4 &2101463912

@@ -31,7 +31,12 @@ namespace SpeedTypingGame.GUI.Overlay
         // Methods
         private void Update()
         {
-            _timerLabel.text = $"{(int)(Game.ElapsedTime * 100 + 0.5f) / 100f} s";
+            // _timerLabel.text = $"{(int)(Game.ElapsedTime * 100 + 0.5f) / 100f} s";
+            if (Game.ElapsedTime > 0 && Game.IsRunning && !Game.IsPaused) {
+                // Debug.Log($"Written characters: {Game.Exercise.GetWrittenRightCharacters()}");
+                _timerLabel.text =
+                    $"{(int)(Game.Exercise.GetWrittenRightCharacters() / 4.6 * 60 / Game.ElapsedTime)} : WPM";
+            }
 
             // So the input box always in focus
             _inputField.Select();
@@ -128,6 +133,10 @@ namespace SpeedTypingGame.GUI.Overlay
         public void ClearInputField() {
             _inputField.text = "";
             FormatExerciseText();
+        }
+
+        public void UpdateText() {
+            _exerciseLabel.text = FormatExerciseText();
         }
     }
 }

@@ -3,6 +3,7 @@ using SpeedTypingGame.Game.Exercises;
 using SpeedTypingGame.Game.Persistence;
 using SpeedTypingGame.GUI;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace SpeedTypingGame.Game
@@ -11,7 +12,7 @@ namespace SpeedTypingGame.Game
     public class GameManager : MonoBehaviour
     {
         // Fields
-        [SerializeField] public GUIManager _gui;
+        [SerializeField] public GUIManager gui;
 
         [SerializeField] private InputManager _inputManager;
         [SerializeField] private PersistenceHandler _persistence;
@@ -51,7 +52,8 @@ namespace SpeedTypingGame.Game
             if (_inputManager.NewExercise())
             {
                 FinishExercise();
-                _gui.OverlayMenu.ClearInputField();
+                gui.OverlayMenu.ClearInputField();
+                gui.OverlayMenu.UpdateText();
             }
         }
 

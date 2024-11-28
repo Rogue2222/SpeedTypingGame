@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -34,6 +35,11 @@ namespace SpeedTypingGame.Game.Exercises
         public int Hits => _hits;
         public int Misses => _misses;
         public string CurrentInput { get; private set; }
+        
+        /// <summary>
+        /// The amount of the right characters written in the input. 
+        /// </summary>
+        public int RightCharactersFromCurrentInput => CurrentWord.StartsWith(CurrentInput) ? CurrentInput.Length : 0;
 
         // Methods
         public Exercise(GameManager game, int length = DEFAULT_LENGTH, int wordLength = WORD_COUNT)
@@ -54,14 +60,14 @@ namespace SpeedTypingGame.Game.Exercises
             Debug.Log("Whole text: " + Text);
         }
         
-        // with the even we don't need to check for multiple keys written in the same frame
+        // with the event we don't need to check for multiple keys written in the same frame
         public void HandleInputChange(string input) { // it can only grow with one character at a time
             // Debug.Log(input);
             CurrentInput = input;
             
             //First character typed
             if (_currentWordIndex == 0 && input.Length == 1) _game.StartExercise();
-            if (input.Length > 0) _game._gui.PauseMenu.ResumeGame();
+            if (input.Length > 0) _game.gui.PauseMenu.ResumeGame();
             
             //Last word don't need space *pain*
             Debug.Log(WordCount + "/" + _currentWordIndex + " input: " + input + "|");
@@ -70,14 +76,24 @@ namespace SpeedTypingGame.Game.Exercises
             if (_currentWordIndex + 1 == WordCount && string.Equals(this[_currentWordIndex], input)) {
                 Debug.Log("EXERCISE FINISHED");
                 _game.FinishExercise();
-                _game._gui.OverlayMenu.ClearInputField();
+                _game.gui.OverlayMenu.ClearInputField();
+                return;
             }
 
-            
+
             if (input.EndsWith(" ") && input.Length > 2 && string.Equals(this[_currentWordIndex], input[..^1])) {
                 _currentWordIndex++;
-                _game._gui.OverlayMenu.ClearInputField();
+                _game.gui.OverlayMenu.ClearInputField();
             }
         }
+
+        public int GetWrittenRightCharacters() {
+            return GetWordsLenghtTillIndex(_currentWordIndex) + RightCharactersFromCurrentInput;
+        }
+
+        public int GetWordsLenghtTillIndex(int index) {
+            return ExerciseWords.Take(index).Select(s => s.Length).Sum() + index; // + index is for the spaces
+        }
+        
     }
 }
