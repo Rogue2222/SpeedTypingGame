@@ -35,6 +35,7 @@ namespace SpeedTypingGame.Game
         private void Update()
         {
             if (_inputManager.NoInput()) return;
+            if (_exercise != null) Debug.Log($"Accuracy: {_exercise.Accuracy:f2}%");
             
             if (_inputManager.PauseKeyPressed()) {
                 if (!_isPaused)
