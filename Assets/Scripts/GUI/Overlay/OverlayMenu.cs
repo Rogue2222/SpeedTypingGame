@@ -39,7 +39,7 @@ namespace SpeedTypingGame.GUI.Overlay
             }
 
             // So the input box always in focus
-            _inputField.Select();
+            _inputField.ActivateInputField();
 
             if (_inputManager.PauseKeyPressed())
             {
