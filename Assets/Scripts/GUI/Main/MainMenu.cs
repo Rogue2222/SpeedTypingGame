@@ -1,3 +1,5 @@
+using System;
+using SpeedTypingGame.Game;
 using UnityEngine;
 
 namespace SpeedTypingGame.GUI.Main
@@ -10,6 +12,7 @@ namespace SpeedTypingGame.GUI.Main
         [Header("Development options")]
         [SerializeField] private bool _shouldSkip;
 #endif
+        [SerializeField] private InputManager _inputManager;
 
 
         // Methods
@@ -22,6 +25,12 @@ namespace SpeedTypingGame.GUI.Main
             }
         }
 #endif
+
+        private void Update() {
+            if (_inputManager.Play()) {
+                PlayGame();
+            }
+        }
 
         public void PlayGame()
         {

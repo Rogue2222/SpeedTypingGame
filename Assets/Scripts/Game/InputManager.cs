@@ -25,6 +25,10 @@ namespace SpeedTypingGame.Game {
 
         public bool NewExercise() {  // CTRL + N?
             return Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.N);
+        }
+        
+        public bool Play() {
+            return Input.GetKey(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.P);
         }        
     }
 }
