@@ -25,7 +25,7 @@ namespace SpeedTypingGame.GUI.Main
 
         public void PlayGame()
         {
-            Game.LoadNewExercise();
+            Game.NewExercise();
 
             _gui.OverlayMenu.Open();
             Close();

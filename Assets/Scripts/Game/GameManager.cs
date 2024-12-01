@@ -52,9 +52,7 @@ namespace SpeedTypingGame.Game
 
             if (_inputManager.NewExercise())
             {
-                FinishExercise();
-                gui.OverlayMenu.ClearInputField();
-                gui.OverlayMenu.UpdateText();
+                NewExercise();
             }
         }
 
@@ -94,7 +92,7 @@ namespace SpeedTypingGame.Game
 
         }
 
-        public void LoadNewExercise()
+        private void LoadNewExercise()
         {
             _exercise = new(this);
         }
@@ -103,6 +101,12 @@ namespace SpeedTypingGame.Game
         {
             LoadNewExercise();
             Stop();
+        }
+
+        public void NewExercise() {
+            FinishExercise();
+            gui.OverlayMenu.ClearInputField();
+            gui.OverlayMenu.UpdateText();
         }
     }
 }
