@@ -266,8 +266,8 @@ namespace SpeedTypingGame.Game.Persistence
             for (int i = 0; i < exerciseCount; ++i)
             {
                 AddExerciseDataSimply(new ExerciseData(
-                    Random.Range(10, 70),
-                    Random.Range(50, 70)));
+                    Random.Range(50, 90),
+                    Random.Range(30, 100)));
             }
 
             Save();
