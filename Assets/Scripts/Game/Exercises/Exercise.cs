@@ -42,7 +42,7 @@ namespace SpeedTypingGame.Game.Exercises
         public double WordsPerMinute => _game.Exercise.GetWrittenRightCharacters() / 4.6d / _game.ElapsedTime * 60d;
         
 
-        public string CurrentInput { get; private set; }
+        public string CurrentInput { get; private set; } = String.Empty;
         public string PreviousInput { get; private set; } = "";
         
         public bool IsFinished => _finished;

@@ -828,7 +828,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _game: {fileID: 0}
-  _shouldPrettyPrint: 0
+  _shouldIndent: 0
 --- !u!1001 &418392282
 PrefabInstance:
   m_ObjectHideFlags: 0
