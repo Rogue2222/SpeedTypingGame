@@ -16,6 +16,7 @@ namespace SpeedTypingGame.GUI.Overlay
 
         [SerializeField] private TextMeshProUGUI _timerLabel;
         [SerializeField] private TextMeshProUGUI _exerciseLabel;
+        [SerializeField] private TextMeshProUGUI _accuracyLabel;
         [SerializeField] private TMP_InputField _inputField;
         [SerializeField] private InputManager _inputManager;
         
@@ -48,6 +49,8 @@ namespace SpeedTypingGame.GUI.Overlay
         public void UpdateWordsPerMinute() {
             _timerLabel.text =
                 $"{Game.Exercise.WordsPerMinute:F0} : WPM";
+            _accuracyLabel.text =
+                $"{Game.Exercise.Accuracy:F0}% : Accuracy";
         }
 
         private string FormatExerciseText()
