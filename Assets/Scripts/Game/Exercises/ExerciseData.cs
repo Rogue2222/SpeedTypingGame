@@ -9,32 +9,26 @@ namespace SpeedTypingGame.Game.Exercises
     public class ExerciseData : IPersistable
     {
         // Fields 
-        public long _timestamp;
-        private float _duration;
-        private int _length;
-        private int _hits;
-        private int _misses;
+        private long _timestamp;
+        private double _accuracy;
+        private double _wordsPerMinute;
 
 
         // Properties
         public DateTime Timestamp => DateTimeOffset.FromUnixTimeMilliseconds(_timestamp).DateTime.ToLocalTime();
-        public float Duration => _duration;
-        public int Length => _length;
-        public int Hits => _hits;
-        public int Misses => _misses;
+        public double Accuracy => _accuracy;
+        public double WordsPerMinute => _wordsPerMinute;
 
 
         // Methods
-        public ExerciseData(float duration, Exercise exercise) :
-            this(duration, exercise.Length, exercise.Hits, exercise.Misses) { }
+        public ExerciseData(Exercise exercise) :
+            this(exercise.Accuracy, exercise.WordsPerMinute) { }
 
-        public ExerciseData(float duration = 0f, int length = 0, int hits = 0, int misses = 0)
+        public ExerciseData(double accuracy = 0, double wordsPerMinute = 0)
         {
             _timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
-            _duration = duration;
-            _length = length;
-            _hits = hits;
-            _misses = misses;
+            _accuracy = accuracy;
+            _wordsPerMinute = wordsPerMinute;
         }
 
         public JToken ToJSON()
@@ -42,20 +36,16 @@ namespace SpeedTypingGame.Game.Exercises
             return new JObject()
             {
                 { "t", _timestamp },
-                { "d", _duration },
-                { "l", _length },
-                { "h", _hits },
-                { "m", _misses }
+                { "a", _accuracy },
+                { "w", _wordsPerMinute },
             };
         }
 
         public void FromJSON(JToken json)
         {
             _timestamp = json["t"].Value<long>();
-            _duration = json["d"].Value<float>();
-            _length = json["l"].Value<int>();
-            _hits = json["h"].Value<int>();
-            _misses = json["m"].Value<int>();
+            _accuracy = json["a"].Value<double>();
+            _wordsPerMinute = json["w"].Value<double>();
         }
     }
 }

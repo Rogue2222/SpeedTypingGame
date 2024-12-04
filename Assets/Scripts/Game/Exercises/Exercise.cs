@@ -10,8 +10,8 @@ namespace SpeedTypingGame.Game.Exercises
     public class Exercise
     {
         // Fields
-        public const int DEFAULT_LENGTH = 8;
-        public const int WORD_COUNT = 4;
+        public const int DEFAULT_LENGTH = 4;
+        public const int WORD_COUNT = 2;
 
         private GameManager _game;
 
@@ -22,6 +22,7 @@ namespace SpeedTypingGame.Game.Exercises
         private int _misses;
         private int _currentWordIndex = 0;
         private bool _inputIsCorrect;
+        private bool _finished;
 
         // Properties
         public string Text => string.Join(" ", _exerciseWords); //_exerciseWords.Aggregate((x, n) => x + " " + n);
@@ -36,11 +37,16 @@ namespace SpeedTypingGame.Game.Exercises
         public int CurrentWordIndex => _currentWordIndex;
         public int Hits => _hits;
         public int Misses => _misses;
-        public double Accuracy => Math.Round(Math.Max(1 - _misses / (float)Text.Length, 0) * 100);
+        public double Accuracy => Math.Round(Math.Max(1 - _misses / (double)Text.Length, 0) * 100);
+
+        public double WordsPerMinute => _game.Exercise.GetWrittenRightCharacters() / 4.6d / _game.ElapsedTime * 60d;
+        
 
         public string CurrentInput { get; private set; }
         public string PreviousInput { get; private set; } = "";
         
+        public bool IsFinished => _finished;
+
         /// <summary>
         /// The amount of the right characters written in the input. 
         /// </summary>
@@ -86,6 +92,7 @@ namespace SpeedTypingGame.Game.Exercises
             Debug.Log(WordCount + "/" + _currentWordIndex + " input: " + input + "|");
             if (_currentWordIndex + 1 == WordCount && string.Equals(CurrentWord, input)) {
                 Debug.Log("EXERCISE FINISHED");
+                _finished = true;
                 _game.FinishExercise();
                 _game.gui.OverlayMenu.ClearInputField();
                 return;

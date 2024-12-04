@@ -33,9 +33,7 @@ namespace SpeedTypingGame.GUI.Overlay
         {
             // _timerLabel.text = $"{(int)(Game.ElapsedTime * 100 + 0.5f) / 100f} s";
             if (Game.ElapsedTime > 0 && Game.IsRunning && !Game.IsPaused) {
-                // Debug.Log($"Written characters: {Game.Exercise.GetWrittenRightCharacters()}");
-                _timerLabel.text =
-                    $"{(int)(Game.Exercise.GetWrittenRightCharacters() / 4.6 * 60 / Game.ElapsedTime)} : WPM";
+                UpdateWordsPerMinute();
             }
 
             // So the input box always in focus
@@ -45,6 +43,11 @@ namespace SpeedTypingGame.GUI.Overlay
             {
                 _gui.PauseMenu.Toggle();
             }
+        }
+
+        public void UpdateWordsPerMinute() {
+            _timerLabel.text =
+                $"{Game.Exercise.WordsPerMinute:F0} : WPM";
         }
 
         private string FormatExerciseText()

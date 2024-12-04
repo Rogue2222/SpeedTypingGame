@@ -34,6 +34,9 @@ namespace SpeedTypingGame.Game
         // Methods
         private void Update()
         {
+            if (_isRunning && !_isPaused) {
+                _elapsedTime += Time.deltaTime;
+            }
             if (_inputManager.NoInput()) return;
             if (_exercise != null) Debug.Log($"Accuracy: {_exercise.Accuracy:f2}%");
             
@@ -53,13 +56,6 @@ namespace SpeedTypingGame.Game
             if (_inputManager.NewExercise())
             {
                 NewExercise();
-            }
-        }
-
-        private void FixedUpdate() {
-            if (_isRunning && !_isPaused)
-            {
-                _elapsedTime += Time.deltaTime;
             }
         }
 
@@ -94,13 +90,16 @@ namespace SpeedTypingGame.Game
 
         private void LoadNewExercise()
         {
+            if (_exercise != null && _persistence && _exercise.IsFinished) _persistence.AddExerciseData(new ExerciseData(_exercise));
             _exercise = new(this);
         }
 
         public void FinishExercise()
         {
-            LoadNewExercise();
             Stop();
+            if (_exercise != null) 
+                gui.OverlayMenu.UpdateWordsPerMinute();
+            LoadNewExercise();
         }
 
         public void NewExercise() {

@@ -21,8 +21,8 @@ namespace SpeedTypingGame.Game.Persistence
         private static string _FilePath;
         private static readonly Dictionary<char, CharacterData> _CharacterDataCollection = new();
         private static JObject _CharacterDataCollectionJSON = new();
-        private static readonly List<ExerciseData> _ExcerciseDataCollection = new();
-        private static JArray _ExcerciseDataCollectionJSON = new();
+        private static readonly List<ExerciseData> _ExerciseDataCollection = new();
+        private static JArray _ExerciseDataCollectionJSON = new();
 
         [SerializeField] private GameManager _game;
 #if UNITY_EDITOR
@@ -38,20 +38,17 @@ namespace SpeedTypingGame.Game.Persistence
         public List<Tuple<char, CharacterData>> CharacterData =>
             _CharacterDataCollection.Select(characterDataPair =>
             new Tuple<char, CharacterData>(characterDataPair.Key, characterDataPair.Value)).ToList();
-        public int ExcerciseDataCount => _ExcerciseDataCollection.Count;
-        public ExerciseData this[int index] => _ExcerciseDataCollection[index];
-        public List<ExerciseData> ExcerciseData => new(_ExcerciseDataCollection);
+        public int ExerciseDataCount => _ExerciseDataCollection.Count;
+        public ExerciseData this[int index] => _ExerciseDataCollection[index];
+        public List<ExerciseData> ExerciseData => new(_ExerciseDataCollection);
         public List<DateTime> Timestamps =>
-            _ExcerciseDataCollection.Select(excerciseData => excerciseData.Timestamp).ToList();
-        public List<float> Durations =>
-            _ExcerciseDataCollection.Select(excerciseData => excerciseData.Duration).ToList();
-        public List<int> Lengths =>
-            _ExcerciseDataCollection.Select(excerciseData => excerciseData.Length).ToList();
-        public List<int> Hits =>
-            _ExcerciseDataCollection.Select(excerciseData => excerciseData.Hits).ToList();
-        public List<int> Misses =>
-            _ExcerciseDataCollection.Select(excerciseData => excerciseData.Misses).ToList();
-
+            _ExerciseDataCollection.Select(exerciseData => exerciseData.Timestamp).ToList();
+        public List<double> Accuracy =>
+            _ExerciseDataCollection.Select(exerciseData => exerciseData.Accuracy).ToList();
+        public List<double> WordsPerMinute =>
+            _ExerciseDataCollection.Select(exerciseData => exerciseData.WordsPerMinute).ToList();
+        
+        
 
         // Methods
         /// <summary>
@@ -62,8 +59,8 @@ namespace SpeedTypingGame.Game.Persistence
             _FilePath = $"{Application.persistentDataPath}/save.json";
             _CharacterDataCollection.Clear();
             _CharacterDataCollectionJSON = new();
-            _ExcerciseDataCollection.Clear();
-            _ExcerciseDataCollectionJSON = new();
+            _ExerciseDataCollection.Clear();
+            _ExerciseDataCollectionJSON = new();
     }
 
         /// <summary>
@@ -81,8 +78,8 @@ namespace SpeedTypingGame.Game.Persistence
         {
             _CharacterDataCollection.Clear();
             _CharacterDataCollectionJSON = new();
-            _ExcerciseDataCollection.Clear();
-            _ExcerciseDataCollectionJSON = new();
+            _ExerciseDataCollection.Clear();
+            _ExerciseDataCollectionJSON = new();
 
             Save();
         }
@@ -98,7 +95,7 @@ namespace SpeedTypingGame.Game.Persistence
             {
                 { "version", Application.version },
                 { "characterData", _CharacterDataCollectionJSON },
-                { "excerciseData", _ExcerciseDataCollectionJSON }
+                { "exerciseData", _ExerciseDataCollectionJSON }
             };
 
             using StreamWriter streamWriter = new(_FilePath);
@@ -112,7 +109,7 @@ namespace SpeedTypingGame.Game.Persistence
 #endif
             stopwatch.Stop();
             Log($"Saved data (for {_CharacterDataCollection.Count} characters " +
-                $"and {_ExcerciseDataCollection.Count} excercises) in {stopwatch.ElapsedMilliseconds} ms");
+                $"and {_ExerciseDataCollection.Count} exercises) in {stopwatch.ElapsedMilliseconds} ms");
         }
 
         /// <summary>
@@ -150,18 +147,18 @@ namespace SpeedTypingGame.Game.Persistence
                 _CharacterDataCollection.Add(characterDataPair.Key[0], characterData);
             }
 
-            _ExcerciseDataCollection.Clear();
-            _ExcerciseDataCollectionJSON = saveData["excerciseData"].Value<JArray>();
-            foreach (JToken excerciseDataJSON in _ExcerciseDataCollectionJSON)
+            _ExerciseDataCollection.Clear();
+            _ExerciseDataCollectionJSON = saveData["exerciseData"].Value<JArray>();
+            foreach (JToken exerciseDataJSON in _ExerciseDataCollectionJSON)
             {
-                ExerciseData excerciseData = new();
-                excerciseData.FromJSON(excerciseDataJSON);
-                _ExcerciseDataCollection.Add(excerciseData);
+                ExerciseData exerciseData = new();
+                exerciseData.FromJSON(exerciseDataJSON);
+                _ExerciseDataCollection.Add(exerciseData);
             }
 
             stopwatch.Stop();
             Log($"Loaded save data (for {_CharacterDataCollection.Count} characters " +
-                $"and {_ExcerciseDataCollection.Count} excercises) in {stopwatch.ElapsedMilliseconds} ms");
+                $"and {_ExerciseDataCollection.Count} exercises) in {stopwatch.ElapsedMilliseconds} ms");
         }
 
         /// <summary>
@@ -196,7 +193,7 @@ namespace SpeedTypingGame.Game.Persistence
         }
 
         /// <summary>
-        /// Adds an  inorrect character typing (aka a miss) to the player's data.
+        /// Adds an  incorrect character typing (aka a miss) to the player's data.
         /// Designed to be used after typing a character
         /// but can be used for a bulk update by specifying the <c>amount</c> parameter.
         /// </summary>
@@ -208,13 +205,13 @@ namespace SpeedTypingGame.Game.Persistence
         }
 
         /// <summary>
-        /// Adds all the data from excercise to the player's data.
+        /// Adds all the data from exercise to the player's data.
         /// </summary>
-        /// <param name="excerciseData">The data of the excercise to be added.</param>
-        public void AddExcerciseData(ExerciseData excerciseData)
+        /// <param name="exerciseData">The data of the exercise to be added.</param>
+        public void AddExerciseData(ExerciseData exerciseData)
         {
-            _ExcerciseDataCollection.Add(excerciseData);
-            _ExcerciseDataCollectionJSON.Add(excerciseData.ToJSON());
+            _ExerciseDataCollection.Add(exerciseData);
+            _ExerciseDataCollectionJSON.Add(exerciseData.ToJSON());
 
             Save();
         }
@@ -230,8 +227,8 @@ namespace SpeedTypingGame.Game.Persistence
             _CharacterDataCollection.Clear();
             _CharacterDataCollectionJSON = new();
 
-            _ExcerciseDataCollection.Clear();
-            _ExcerciseDataCollectionJSON = new();
+            _ExerciseDataCollection.Clear();
+            _ExerciseDataCollectionJSON = new();
 
             stopwatch.Stop();
             Log($"Cleared data in {stopwatch.ElapsedMilliseconds} ms");
