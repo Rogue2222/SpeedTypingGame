@@ -1,10 +1,8 @@
-using System;
+using UnityEngine;
+
 using SpeedTypingGame.Game.Exercises;
 using SpeedTypingGame.Game.Persistence;
 using SpeedTypingGame.GUI;
-using UnityEngine;
-using UnityEngine.Serialization;
-using UnityEngine.UI;
 
 namespace SpeedTypingGame.Game
 {
@@ -12,10 +10,11 @@ namespace SpeedTypingGame.Game
     public class GameManager : MonoBehaviour
     {
         // Fields
-        [SerializeField] public GUIManager gui;
+        [SerializeField] private GUIManager _gui;
 
-        [SerializeField] private InputManager _inputManager;
+        [SerializeField] private InputManager _input;
         [SerializeField] private PersistenceHandler _persistence;
+        [SerializeField] private ExerciseGenerator _generator;
         
         private Exercise _exercise;
         private bool _isRunning;
@@ -24,12 +23,15 @@ namespace SpeedTypingGame.Game
 
 
         // Properties
-        public InputManager Input => _inputManager;
+        public GUIManager GUI => _gui;
+        public InputManager Input => _input;
         public PersistenceHandler Persistence => _persistence;
+        public ExerciseGenerator Generator => _generator;
         public Exercise Exercise => _exercise;
         public bool IsRunning => _isRunning;
         public bool IsPaused => _isPaused;
         public float ElapsedTime => _elapsedTime;
+
 
         // Methods
         private void Update()
@@ -37,10 +39,10 @@ namespace SpeedTypingGame.Game
             if (_isRunning && !_isPaused) {
                 _elapsedTime += Time.deltaTime;
             }
-            if (_inputManager.NoInput()) return;
+            if (_input.NoInput()) return;
             if (_exercise != null) Debug.Log($"Accuracy: {_exercise.Accuracy:f2}%");
             
-            if (_inputManager.PauseKeyPressed()) {
+            if (_input.PauseKeyPressed()) {
                 if (!_isPaused)
                 {
                     Pause();
@@ -53,7 +55,7 @@ namespace SpeedTypingGame.Game
                 }
             }
 
-            if (_inputManager.NewExercise())
+            if (_input.NewExercise())
             {
                 NewExercise();
             }
@@ -98,14 +100,14 @@ namespace SpeedTypingGame.Game
         {
             Stop();
             if (_exercise != null) 
-                gui.OverlayMenu.UpdateWordsPerMinute();
+                _gui.OverlayMenu.UpdateWordsPerMinute();
             LoadNewExercise();
         }
 
         public void NewExercise() {
             FinishExercise();
-            gui.OverlayMenu.ClearInputField();
-            gui.OverlayMenu.UpdateText();
+            _gui.OverlayMenu.ClearInputField();
+            _gui.OverlayMenu.UpdateText();
         }
     }
 }

@@ -16,9 +16,7 @@ namespace SpeedTypingGame.Game.Exercises
         private GameManager _game;
 
         private readonly string _text;
-        private int _cursorPosition;
         private readonly List<string> _exerciseWords;
-        private int _hits;
         private int _misses;
         private int _currentWordIndex = 0;
         private bool _inputIsCorrect;
@@ -27,16 +25,11 @@ namespace SpeedTypingGame.Game.Exercises
         // Properties
         public string Text => string.Join(" ", _exerciseWords); //_exerciseWords.Aggregate((x, n) => x + " " + n);
         public int Length => _text.Length;
-        public int CursorPosition => _cursorPosition;
-        public string ToCursor => _text.Substring(0, _cursorPosition);
-        public string FromCursor => _text.Substring(_cursorPosition, _text.Length - _cursorPosition);
         public int WordCount => _exerciseWords.Count;
         public string this[int index] => _exerciseWords[index];
         public string CurrentWord => this[_currentWordIndex];
         public List<string> ExerciseWords => _exerciseWords;
         public int CurrentWordIndex => _currentWordIndex;
-        public int Hits => _hits;
-        public int Misses => _misses;
         public double Accuracy => Math.Round(Math.Max(1 - _misses / (double)Text.Length, 0) * 100);
 
         public double WordsPerMinute => _game.Exercise.GetWrittenRightCharacters() / 4.6d / _game.ElapsedTime * 60d;
@@ -57,8 +50,9 @@ namespace SpeedTypingGame.Game.Exercises
         {
             _game = game;
             
-            _exerciseWords = new();
+            _exerciseWords = _game.Generator.Generate();
             
+            /*
             StringBuilder stringBuilder = new(length);
             for (int j = 0; j < wordLength; j++) {
                 for (int i = 0; i < length; ++i) {
@@ -68,6 +62,7 @@ namespace SpeedTypingGame.Game.Exercises
                 stringBuilder.Append(" ");
                 stringBuilder.Clear();
             }
+            */
             Debug.Log("Whole text: " + Text);
         }
         
@@ -86,7 +81,7 @@ namespace SpeedTypingGame.Game.Exercises
                 _misses = 0;
                 _game.StartExercise();
             }
-            if (input.Length > 0) _game.gui.PauseMenu.ResumeGame();
+            if (input.Length > 0) _game.GUI.PauseMenu.ResumeGame();
             
             //Last word don't need space *pain*
             Debug.Log(WordCount + "/" + _currentWordIndex + " input: " + input + "|");
@@ -94,14 +89,14 @@ namespace SpeedTypingGame.Game.Exercises
                 Debug.Log("EXERCISE FINISHED");
                 _finished = true;
                 _game.FinishExercise();
-                _game.gui.OverlayMenu.ClearInputField();
+                _game.GUI.OverlayMenu.ClearInputField();
                 return;
             }
 
 
             if (input.EndsWith(" ") && input.Length > 2 && string.Equals(CurrentWord, input[..^1])) {
                 _currentWordIndex++;
-                _game.gui.OverlayMenu.ClearInputField();
+                _game.GUI.OverlayMenu.ClearInputField();
             }
 
             PreviousInput = input;

@@ -49,7 +49,6 @@ namespace SpeedTypingGame.Game.Persistence
         public List<double> WordsPerMinute =>
             _ExerciseDataCollection.Select(exerciseData => exerciseData.WordsPerMinute).ToList();
         
-        
 
         // Methods
         /// <summary>
@@ -278,7 +277,7 @@ namespace SpeedTypingGame.Game.Persistence
         /// [<c>_DebugGroup</c>] message format.
         /// </summary>
         /// <param name="message">The message to be logged.</param>
-        private void Log(string message)
+        private void Log(object message)
         {
             Debug2.Log(message, _DebugGroup);
         }

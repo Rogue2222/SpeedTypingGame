@@ -21,8 +21,7 @@ namespace SpeedTypingGame.Game.Exercises
 
 
         // Methods
-        public ExerciseData(Exercise exercise) :
-            this(exercise.Accuracy, exercise.WordsPerMinute) { }
+        public ExerciseData(Exercise exercise) : this(exercise.Accuracy, exercise.WordsPerMinute) { }
 
         public ExerciseData(double accuracy = 0, double wordsPerMinute = 0)
         {
