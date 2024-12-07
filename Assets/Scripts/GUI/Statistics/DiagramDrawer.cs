@@ -1,12 +1,7 @@
-using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using SpeedTypingGame.Game.Persistence;
-using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
-using Random = UnityEngine.Random;
+using TMPro;
 
 namespace GUI.Statistics
 {
@@ -15,7 +10,6 @@ namespace GUI.Statistics
         // TODO remove after merge
         private int _exerciseCount;
     
-        
         [SerializeField] private RectTransform diagramSpace;
         [SerializeField] private LineRenderer statLineRenderer;
         [SerializeField] private LineRenderer tickLineRenderer;

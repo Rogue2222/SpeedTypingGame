@@ -17,9 +17,8 @@ namespace SpeedTypingGame.GUI.Pause
         {
             Game.Stop();
 
-            _gui.MainMenu.Open();
             _gui.OverlayMenu.Close();
-            Close();
+            Back();
         }
     }
 }

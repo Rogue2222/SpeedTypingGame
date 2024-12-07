@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 namespace SpeedTypingGame.Game.Exercises
 {
@@ -51,18 +49,7 @@ namespace SpeedTypingGame.Game.Exercises
             _game = game;
             
             _exerciseWords = _game.Generator.Generate();
-            
-            /*
-            StringBuilder stringBuilder = new(length);
-            for (int j = 0; j < wordLength; j++) {
-                for (int i = 0; i < length; ++i) {
-                    stringBuilder.Append((char)Random.Range(97, 123));
-                }
-                _exerciseWords.Add(stringBuilder.ToString());
-                stringBuilder.Append(" ");
-                stringBuilder.Clear();
-            }
-            */
+
             Debug.Log("Whole text: " + Text);
         }
         
