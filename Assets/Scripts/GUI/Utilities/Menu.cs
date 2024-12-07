@@ -51,6 +51,8 @@ namespace SpeedTypingGame.GUI
 
         public virtual void Back()
         {
+            _gui.MainMenu.Open();
+
             Close();
         }
     }

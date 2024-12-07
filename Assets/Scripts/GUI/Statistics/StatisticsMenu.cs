@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using GUI.Statistics;
 using SpeedTypingGame.Game.Persistence;
@@ -51,13 +49,6 @@ namespace SpeedTypingGame.GUI.Statistics
                 accuracyDiagram.UpdateDataPoints(persistenceHandler.Accuracy.TakeLast(500).ToList());
                 wpmDiagram.UpdateDataPoints(persistenceHandler.WordsPerMinute.TakeLast(500).ToList());
             }
-        }
-
-        public override void Back()
-        {
-            _gui.MainMenu.Open();
-
-            Close();
         }
     }
 }

@@ -1,72 +1,74 @@
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
 using UnityEngine;
 
-// Data source: https://apiacoa.org/publications/teaching/datasets/google-10000-english.txt;
+// Data source: https://apiacoa.org/publications/teaching/datasets/google-10000-english.txt
 namespace SpeedTypingGame.Game.Exercises
 {
+    /// <summary>
+    /// Responsible for loading a dictionary which then can be used to randomly select words from for exercises.
+    /// </summary>
     public class ExerciseGenerator : MonoBehaviour
     {
         // Fields
         private const string _DebugGroup = "GENERATOR";
-        private static string _DictionaryPath;
-        private static readonly Vector2Int _DefaultCharacterCountRange = new(32, 32);
-        private static readonly List<string> _Dictionary = new(8192);
+        private const int _MinCharacterCount = 32;
+        private const int _MaxCharacterCount = 32;
+        private static readonly List<string> _Dictionary = new();
 
-        [SerializeField] private Vector2Int _characterCountRange = _DefaultCharacterCountRange;
+        [SerializeField] private Vector2Int _characterCountRange = new(_MinCharacterCount, _MaxCharacterCount);
         [SerializeField] private TextAsset _dictionaryFile;
 
 
         // Properties
+        /// <summary>
+        /// The number of words in the dictionary.
+        /// </summary>
         public static int DictionarySize => _Dictionary.Count;
 
 
         // Methods
-        private void Awake()
-        {
-#if UNITY_STANDALONE || UNITY_EDITOR
-            _DictionaryPath = $"{Application.streamingAssetsPath}/dictionary.txt";
-#elif UNITY_WEBGL
-            _DictionaryPath = $"dictionary.txt";
-#endif
-        }
-
+        /// <summary>
+        /// Loads the dictionary.
+        /// </summary>
         private void Start()
         {
             Load();
         }
 
+        /// <summary>
+        /// Loads words from the provided dictionary file into <c>_Dictionary</c> where each row corresponds to one.
+        /// </summary>
         private void Load()
         {
             Stopwatch stopwatch = Stopwatch.StartNew();
 
             _Dictionary.Clear();
 
-#if UNITY_STANDALONE || UNITY_EDITOR
-            StreamReader streamReader = new(_DictionaryPath);
-            string word = streamReader.ReadLine();
-            while (!string.IsNullOrEmpty(word))
-            {
-                _Dictionary.Add(word);
-                word = streamReader.ReadLine();
-            }
-            streamReader.Close();
-#elif UNITY_WEBGL
-            _Dictionary.AddRange(_dictionaryFile.text.Split('\n'));
-#endif
+            string[] words = _dictionaryFile.text.Split('\n');
+            _Dictionary.Capacity = Mathf.NextPowerOfTwo(words.Length);
+            _Dictionary.AddRange(words);
+
             stopwatch.Stop();
-            Log($"Loaded {_Dictionary.Count} words from <{_DictionaryPath}> in {stopwatch.ElapsedMilliseconds} ms");
+            Log($"Loaded {_Dictionary.Count} words from <{_dictionaryFile.name}> in {stopwatch.ElapsedMilliseconds} ms");
         }
 
-        public List<string> Generate()
+        /// <summary>
+        /// Generates a list of words by randomly selecting them from <c>_Dictionary</c> in a way that the sum of their<br />
+        /// lengths is roughly in the range of [<c>minCharacterCount</c>, <c>maxCharacterCount</c>].
+        /// </summary>
+        /// <param name="minCharacterCount">
+        /// The lower limit for the total length of words (<c>_MinCharacterCount</c> by default).</param>
+        /// <param name="maxCharacterCount">
+        /// The rough upper limit for the total length of words (<c>_MaxCharacterCount</c> by default).</param>
+        /// <returns>A list of randomly selected words from <c>_Dictionary</c>.</returns>
+        public List<string> Generate(int minCharacterCount = _MinCharacterCount, int maxCharacterCount = _MaxCharacterCount)
         {
-            int targetCharacterCount = Random.Range(_characterCountRange.x, _characterCountRange.y);
+            int targetCharacterCount = Random.Range(minCharacterCount, maxCharacterCount) - 2;
             int characterCount = 0;
 
             List<string> words = new(targetCharacterCount / 2);
-            HashSet<int> usedIndexes = new(targetCharacterCount / 4);
+            HashSet<int> usedIndexes = new(targetCharacterCount / 2);
             
             while (characterCount < targetCharacterCount)
             {
@@ -83,6 +85,28 @@ namespace SpeedTypingGame.Game.Exercises
             }
 
             return words;
+        }
+
+        /// <summary>
+        /// Generates a list of words by randomly selecting them from <c>_Dictionary</c> in a way that the sum of their<br />
+        /// lengths is roughly in the range of [<c>_characterCountRange.x</c>, <c>maxCharacterCount</c>].
+        /// </summary>
+        /// <param name="maxCharacterCount">
+        /// The rough upper limit for the total length of words. (<c>_MaxCharacterCount</c> by default)</param>
+        /// <returns>A list of randomly selected words from <c>_Dictionary.</c></returns>
+        public List<string> Generate(int maxCharacterCount = _MaxCharacterCount)
+        {
+            return Generate(_characterCountRange.x, maxCharacterCount);
+        }
+
+        /// <summary>
+        /// Generates a list of words by randomly selecting them from <c>_Dictionary</c> in a way that the sum of their<br />
+        /// lengths is roughly in the range of [<c>_characterCountRange.x</c>, <c>_characterCountRange.y</c>].
+        /// </summary>
+        /// <returns>A list of randomly selected words from <c>_Dictionary.</c></returns>
+        public List<string> Generate()
+        {
+            return Generate(_characterCountRange.x, _characterCountRange.y);
         }
 
         /// <summary>

@@ -79,10 +79,10 @@ LineRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Positions:
   - {x: 0, y: 0, z: 0}
-  - {x: 1500, y: 700, z: 0}
+  - {x: 2000, y: 700, z: 0}
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 0.9819558
@@ -771,22 +771,22 @@ LineRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Positions:
   - {x: -4, y: 87.5, z: -1}
-  - {x: 1504, y: 87.5, z: -1}
-  - {x: 1504, y: 175, z: -1}
+  - {x: 2004, y: 87.5, z: -1}
+  - {x: 2004, y: 175, z: -1}
   - {x: -4, y: 175, z: -1}
   - {x: -4, y: 262.5, z: -1}
-  - {x: 1504, y: 262.5, z: -1}
-  - {x: 1504, y: 350, z: -1}
+  - {x: 2004, y: 262.5, z: -1}
+  - {x: 2004, y: 350, z: -1}
   - {x: -4, y: 350, z: -1}
   - {x: -4, y: 437.5, z: -1}
-  - {x: 1504, y: 437.5, z: -1}
-  - {x: 1504, y: 525, z: -1}
+  - {x: 2004, y: 437.5, z: -1}
+  - {x: 2004, y: 525, z: -1}
   - {x: -4, y: 525, z: -1}
   - {x: -4, y: 612.5, z: -1}
-  - {x: 1504, y: 612.5, z: -1}
+  - {x: 2004, y: 612.5, z: -1}
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 0.031237375
@@ -1834,6 +1834,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8233991632289259323}
+  - component: {fileID: 8025550452527967143}
   m_Layer: 5
   m_Name: Tick labels
   m_TagString: Untagged
@@ -1866,9 +1867,35 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: -40, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -10, y: 0}
+  m_SizeDelta: {x: 175, y: 785}
+  m_Pivot: {x: 1, y: 0.5}
+--- !u!114 &8025550452527967143
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8019745303345006591}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 4
+  m_Spacing: 0
+  m_ChildForceExpandWidth: 1
+  m_ChildForceExpandHeight: 1
+  m_ChildControlWidth: 1
+  m_ChildControlHeight: 1
+  m_ChildScaleWidth: 1
+  m_ChildScaleHeight: 1
+  m_ReverseArrangement: 0
 --- !u!1 &8872576573172126124
 GameObject:
   m_ObjectHideFlags: 0

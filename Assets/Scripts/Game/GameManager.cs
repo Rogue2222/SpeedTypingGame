@@ -61,15 +61,6 @@ namespace SpeedTypingGame.Game
             }
         }
 
-        public void Play()
-        {
-            _isRunning = true;
-            _isPaused = false;
-            _elapsedTime = 0f;
-
-            LoadNewExercise();
-        }
-
         public void Pause() {
             _isPaused = true;
         }
@@ -92,7 +83,7 @@ namespace SpeedTypingGame.Game
 
         private void LoadNewExercise()
         {
-            if (_exercise != null && _persistence && _exercise.IsFinished) _persistence.AddExerciseData(new ExerciseData(_exercise));
+            if (_exercise != null && _exercise.IsFinished) _persistence.AddExerciseData(new(_exercise));
             _exercise = new(this);
         }
 
