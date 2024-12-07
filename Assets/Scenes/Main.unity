@@ -3458,6 +3458,11 @@ RectTransform:
   m_AnchoredPosition: {x: 250, y: -503.125}
   m_SizeDelta: {x: 500, y: 201.25}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1363774385 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 445828863425956510, guid: 4e6b87049cd643f4783f4382490541b9, type: 3}
+  m_PrefabInstance: {fileID: 1652229066}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1457901394
 GameObject:
   m_ObjectHideFlags: 0
@@ -3726,6 +3731,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _gui: {fileID: 730317865}
   _inputManager: {fileID: 1331882755}
+  _exitButton: {fileID: 1363774385}
   _shouldSkip: 0
 --- !u!1 &1577787935
 GameObject:
@@ -3874,6 +3880,10 @@ PrefabInstance:
     - target: {fileID: 445828863425956510, guid: 4e6b87049cd643f4783f4382490541b9, type: 3}
       propertyPath: m_Name
       value: Exit button
+      objectReference: {fileID: 0}
+    - target: {fileID: 445828863425956510, guid: 4e6b87049cd643f4783f4382490541b9, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2822058886062161462, guid: 4e6b87049cd643f4783f4382490541b9, type: 3}
       propertyPath: m_Pivot.x
@@ -5109,7 +5119,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 0,00 s
+  m_text: '0 : WPM'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6a8a968d88f887c4e964825504b5a5c4, type: 2}
   m_sharedMaterial: {fileID: 5293095683542488252, guid: 6a8a968d88f887c4e964825504b5a5c4, type: 2}

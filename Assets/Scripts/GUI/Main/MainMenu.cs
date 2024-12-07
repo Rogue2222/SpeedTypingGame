@@ -8,22 +8,25 @@ namespace SpeedTypingGame.GUI.Main
     {
         // Fields
         [SerializeField] private InputManager _inputManager;
+        [SerializeField] private GameObject _exitButton;
 #if UNITY_EDITOR
         [Header("Development options")]
         [SerializeField] private bool _shouldSkip;
-#endif       
+#endif
 
 
-        // Methods
-#if UNITY_EDITOR
+// Methods
         private void Start()
         {
+#if UNITY_WEBGL
+            _exitButton.SetActive(false);
+#elif UNITY_EDITOR
             if (_shouldSkip)
             {
                 PlayGame();
             }
-        }
 #endif
+        }
 
         private void Update() {
             if (_inputManager.Play()) {

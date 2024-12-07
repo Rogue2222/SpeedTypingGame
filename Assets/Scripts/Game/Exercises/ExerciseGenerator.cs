@@ -64,6 +64,8 @@ namespace SpeedTypingGame.Game.Exercises
         /// <returns>A list of randomly selected words from <c>_Dictionary</c>.</returns>
         public List<string> Generate(int minCharacterCount = _MinCharacterCount, int maxCharacterCount = _MaxCharacterCount)
         {
+            Stopwatch stopwatch = Stopwatch.StartNew();
+
             int targetCharacterCount = Random.Range(minCharacterCount, maxCharacterCount) - 2;
             int characterCount = 0;
 
@@ -83,6 +85,10 @@ namespace SpeedTypingGame.Game.Exercises
                 words.Add(word);
                 characterCount += word.Length;
             }
+
+            stopwatch.Stop();
+            Log($"Selected {words.Count} words with a total length of {characterCount} " +
+                $"in {stopwatch.ElapsedMilliseconds} ms");
 
             return words;
         }
