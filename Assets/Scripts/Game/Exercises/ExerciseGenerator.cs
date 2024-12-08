@@ -45,7 +45,8 @@ namespace SpeedTypingGame.Game.Exercises
 
             _Dictionary.Clear();
 
-            string[] words = _dictionaryFile.text.Split('\n');
+            string cleanedText = _dictionaryFile.text.Replace("\r", "");
+            string[] words = cleanedText.Split('\n');
             _Dictionary.Capacity = Mathf.NextPowerOfTwo(words.Length);
             _Dictionary.AddRange(words);
 
