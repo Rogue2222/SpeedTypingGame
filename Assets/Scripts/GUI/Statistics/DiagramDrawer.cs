@@ -1,7 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using TMPro;
+using UnityEngine.PlayerLoop;
+using UnityEngine.Serialization;
 
 namespace GUI.Statistics
 {
@@ -15,40 +18,36 @@ namespace GUI.Statistics
         [SerializeField] private LineRenderer tickLineRenderer;
         [SerializeField] private TextMeshProUGUI xLabel;
         [SerializeField] private TextMeshProUGUI yLabel;
-        [SerializeField] private GameObject tickLabels;
+        [SerializeField] private TextMeshProUGUI xMinTick;
+        [SerializeField] private TextMeshProUGUI xMaxTick;
+        [SerializeField] private GameObject yTickLabels;
     
-        private List<double> _dataPoints;
-        private Vector3[] _linePoints;
+        private List<float> _dataPoints;
         
         void Awake()
         {
-            _dataPoints = new List<double>();
+            _dataPoints = new List<float>();
             SetTickLines();
         }
     
-        private void UpdateLinePoints(double min = 0)
+        private void UpdateLinePoints(float min = 0)
         {
             statLineRenderer.positionCount = _exerciseCount;
             
-            double max = _dataPoints.Max();
+            statLineRenderer.widthMultiplier = Mathf.Lerp(0.05f, 0.021f, _exerciseCount / 500.0f);
             
-            _linePoints = new Vector3[_exerciseCount];
+            float max = _dataPoints.Max();
+            
             for (int i = 0; i < _exerciseCount; i++)
             {
-                if (i == 0)
-                {
-                    _linePoints[i] = new Vector3(0, 0, -5);
-                }
-
                 // Create equal steps and therefore fill diagram space
                 float offset = diagramSpace.rect.width / (_exerciseCount - 1);
                 float x = i * offset;
             
                 // normalize results
-                double y = (_dataPoints[i] - min) / (max - min) * diagramSpace.rect.height;
-            
-                _linePoints[i] = new Vector3(x, (float)y, -1);
-                statLineRenderer.SetPosition(i, _linePoints[i]);
+                float y = (_dataPoints[i] - min) / (max - min) * diagramSpace.rect.height;
+                
+                statLineRenderer.SetPosition(i, new Vector3(x, y, -1));
             }
         }
 
@@ -71,20 +70,61 @@ namespace GUI.Statistics
 
         private void UpdateTicks()
         {
-            // Update the ticks on the Y axis
-            for (int i = 0; i < tickLabels.transform.childCount; i++)
+            xMinTick.SetText("1");
+            xMaxTick.SetText($"{_exerciseCount}");
+            
+            for (int i = 0; i < yTickLabels.transform.childCount; i++)
             {
-                double value = Mathf.Lerp((float)_dataPoints.Max(), (float)_dataPoints.Min(), i / 8f);
-                
-                tickLabels.transform.GetChild(i).GetComponent<TextMeshProUGUI>().SetText($"{value:F2}"); 
+                float value = Mathf.Lerp(_dataPoints.Max(), _dataPoints.Min(), i / 8f);
+                yTickLabels.transform.GetChild(i).GetComponent<TextMeshProUGUI>().SetText($"{value:F2}"); 
             }
+        }
+
+        private void Reset() {
+            xMinTick.SetText("0");
+            xMaxTick.SetText("0");
+            statLineRenderer.positionCount = 0;
+            statLineRenderer.SetPositions(new Vector3[]{});
+            for (int i = 0; i < yTickLabels.transform.childCount; i++)
+            {
+                yTickLabels.transform.GetChild(i).GetComponent<TextMeshProUGUI>().SetText(0.0f.ToString("F2")); 
+            }
+        }
+
+        private void DrawOne() {
+            xMinTick.SetText("1");
+            xMaxTick.SetText("1");
+            for (int i = 0; i < yTickLabels.transform.childCount; i++)
+            {
+                float value = Mathf.Lerp(_dataPoints[0] + _dataPoints[0] / 10,
+                                         _dataPoints[0] - _dataPoints[0] / 10, 
+                                         i / 8f);
+                yTickLabels.transform.GetChild(i).GetComponent<TextMeshProUGUI>().SetText($"{value:F2}"); 
+            }
+
+            statLineRenderer.positionCount = 2;
+            statLineRenderer.widthMultiplier = 0.05f;
+            statLineRenderer.SetPosition(0, 
+                new Vector3(0, 0.5f * diagramSpace.rect.height, -1));
+            statLineRenderer.SetPosition(1, 
+                new Vector3(diagramSpace.rect.width, 0.5f * diagramSpace.rect.height, -1));
         }
 
         public void UpdateDataPoints(List<double> newDataPoints)
         {
-            _dataPoints = newDataPoints;
+            _dataPoints = newDataPoints.Select(x => (float)x).ToList();
             _exerciseCount = newDataPoints.Count;
-            statLineRenderer.widthMultiplier = Mathf.Lerp(0.05f, 0.021f, _exerciseCount / 500.0f);
+            
+            if (_exerciseCount == 0) {
+                Reset();
+                return;
+            }
+            
+            if (_exerciseCount == 1) {
+                DrawOne();
+                return;
+            }
+            
             UpdateLinePoints(_dataPoints.Min());
             UpdateTicks();
         }
