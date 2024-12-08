@@ -50,7 +50,7 @@ namespace SpeedTypingGame.GUI.Overlay
             _timerLabel.text =
                 $"{Game.Exercise.WordsPerMinute:F0} : WPM";
             _accuracyLabel.text =
-                $"{Game.Exercise.Accuracy:F0}% : Accuracy";
+                $"Accuracy: {Game.Exercise.Accuracy:F0}%";
         }
 
         private string FormatExerciseText()
