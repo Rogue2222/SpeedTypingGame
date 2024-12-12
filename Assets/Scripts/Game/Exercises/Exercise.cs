@@ -30,7 +30,8 @@ namespace SpeedTypingGame.Game.Exercises
         public int CurrentWordIndex => _currentWordIndex;
         public double Accuracy => Math.Round(Math.Max(1 - _misses / (double)Text.Length, 0) * 100);
 
-        public double WordsPerMinute => _game.Exercise.GetWrittenRightCharacters() / 4.6d / _game.ElapsedTime * 60d;
+        public double WordsPerMinute => _game.ElapsedTime == 0f ? 0f :
+            _game.Exercise.GetWrittenRightCharacters() / 4.6d / _game.ElapsedTime * 60d;
         
 
         public string CurrentInput { get; private set; } = String.Empty;

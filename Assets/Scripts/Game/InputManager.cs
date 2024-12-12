@@ -1,8 +1,8 @@
 using System;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace SpeedTypingGame.Game {
+    [AddComponentMenu("SpeedTypingGame/Game/Input manager")]
     public class InputManager : MonoBehaviour {
 
         public bool PauseKeyPressed() {

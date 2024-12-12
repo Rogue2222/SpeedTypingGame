@@ -8,6 +8,7 @@ namespace SpeedTypingGame.Game.Exercises
     /// <summary>
     /// Responsible for loading a dictionary which then can be used to randomly select words from for exercises.
     /// </summary>
+    [AddComponentMenu("SpeedTypingGame/Game/Exercises/Exercise generator")]
     public class ExerciseGenerator : MonoBehaviour
     {
         // Fields

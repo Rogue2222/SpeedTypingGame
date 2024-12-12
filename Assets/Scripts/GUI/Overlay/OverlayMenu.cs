@@ -34,7 +34,7 @@ namespace SpeedTypingGame.GUI.Overlay
         {
             // _timerLabel.text = $"{(int)(Game.ElapsedTime * 100 + 0.5f) / 100f} s";
             if (Game.ElapsedTime > 0 && Game.IsRunning && !Game.IsPaused) {
-                UpdateWordsPerMinute();
+                UpdateStatistics();
             }
 
             // So the input box always in focus
@@ -46,7 +46,7 @@ namespace SpeedTypingGame.GUI.Overlay
             }
         }
 
-        public void UpdateWordsPerMinute() {
+        public void UpdateStatistics() {
             _timerLabel.text =
                 $"{Game.Exercise.WordsPerMinute:F0} : WPM";
             _accuracyLabel.text =

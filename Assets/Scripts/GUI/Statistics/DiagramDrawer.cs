@@ -1,13 +1,11 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using TMPro;
-using UnityEngine.PlayerLoop;
-using UnityEngine.Serialization;
 
 namespace GUI.Statistics
 {
+    [AddComponentMenu("SpeedTypingGame/GUI/Statistics/Diagram drawer")]
     public class DiagramDrawer : MonoBehaviour
     {
         // TODO remove after merge

@@ -4,7 +4,6 @@ using SpeedTypingGame.Game;
 
 namespace SpeedTypingGame.GUI
 {
-    [AddComponentMenu("SpeedTypingGame/GUI/Menu")]
     public abstract class Menu : MonoBehaviour
     {
         // Fields

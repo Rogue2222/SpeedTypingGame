@@ -1,3 +1,4 @@
+using UnityEditor;
 using UnityEngine;
 
 using SpeedTypingGame.Game.Exercises;
@@ -91,7 +92,7 @@ namespace SpeedTypingGame.Game
         {
             Stop();
             if (_exercise != null) 
-                _gui.OverlayMenu.UpdateWordsPerMinute();
+                _gui.OverlayMenu.UpdateStatistics();
             LoadNewExercise();
         }
 
@@ -99,6 +100,18 @@ namespace SpeedTypingGame.Game
             FinishExercise();
             _gui.OverlayMenu.ClearInputField();
             _gui.OverlayMenu.UpdateText();
+        }
+
+        [MenuItem("SpeedTypingGame/Visit repository page", priority = 1)]
+        public static void VisitRepository()
+        {
+            Application.OpenURL("https://github.com/Rogue2222/SpeedTypingGame");
+        }
+
+        [MenuItem("SpeedTypingGame/Visit itch.io page", priority = 2)]
+        public static void VisitItchPage()
+        {
+            Application.OpenURL("https://remarci.itch.io/speedtypinggame");
         }
     }
 }
