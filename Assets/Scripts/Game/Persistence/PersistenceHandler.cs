@@ -44,20 +44,15 @@ namespace SpeedTypingGame.Game.Persistence
 
         // Methods
         /// <summary>
-        /// Sets the file path and initializes the static data containers before any other action.
+        /// Sets the file path and initializes the static data containers before any other action. <br />
+        /// After that, it loads the save data for the application's start.
         /// </summary>
         private void Awake()
         {
             _FilePath = $"{Application.persistentDataPath}/save.json";
             _ExerciseDataCollection.Clear();
             _ExerciseDataCollectionJSON = new();
-    }
 
-        /// <summary>
-        /// Loads the save data every time the application starts.
-        /// </summary>
-        private void Start()
-        {
             Load();
         }
 
@@ -83,6 +78,7 @@ namespace SpeedTypingGame.Game.Persistence
             JObject saveData = new()
             {
                 { "version", Application.version },
+                { "generatorData", _game.Generator.ToJSON() },
                 { "exerciseData", _ExerciseDataCollectionJSON }
             };
 
@@ -124,15 +120,30 @@ namespace SpeedTypingGame.Game.Persistence
 
             JObject saveData = JObject.Parse(PlayerPrefs.GetString("save"));            
 #endif
-            string version = saveData["version"].Value<string>();
-
-            _ExerciseDataCollection.Clear();
-            _ExerciseDataCollectionJSON = saveData["exerciseData"].Value<JArray>();
-            foreach (JToken exerciseDataJSON in _ExerciseDataCollectionJSON)
+            // Load version
+            if (saveData.ContainsKey("version"))
             {
-                ExerciseData exerciseData = new();
-                exerciseData.FromJSON(exerciseDataJSON);
-                _ExerciseDataCollection.Add(exerciseData);
+                string version = saveData["version"].Value<string>();
+            }
+
+            // Load generator data
+            if (saveData.ContainsKey("generatorData"))
+            {
+                JObject generatorData = saveData["generatorData"].Value<JObject>();
+                _game.Generator.FromJSON(generatorData);
+            }
+
+            // Load exercise data
+            if (saveData.ContainsKey("exerciseData"))
+            {
+                _ExerciseDataCollection.Clear();
+                _ExerciseDataCollectionJSON = saveData["exerciseData"].Value<JArray>();
+                foreach (JToken exerciseDataJSON in _ExerciseDataCollectionJSON)
+                {
+                    ExerciseData exerciseData = new();
+                    exerciseData.FromJSON(exerciseDataJSON);
+                    _ExerciseDataCollection.Add(exerciseData);
+                }
             }
 
             stopwatch.Stop();
@@ -181,7 +192,7 @@ namespace SpeedTypingGame.Game.Persistence
         /// Generates and saves dummy data for testing purposes.
         /// </summary>
         /// <param name="exerciseCount">How many random exercises generate data for, 100 000 by default</param>
-        private void GenerateDummyData(int exerciseCount = 100_000)
+        private void GenerateDummyData(int exerciseCount = 500)
         {
             for (int i = 0; i < exerciseCount; ++i)
             {

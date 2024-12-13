@@ -102,6 +102,7 @@ namespace SpeedTypingGame.Game
             _gui.OverlayMenu.UpdateText();
         }
 
+#if UNITY_EDITOR
         [MenuItem("SpeedTypingGame/Visit repository page", priority = 1)]
         public static void VisitRepository()
         {
@@ -113,5 +114,6 @@ namespace SpeedTypingGame.Game
         {
             Application.OpenURL("https://remarci.itch.io/speedtypinggame");
         }
+#endif
     }
 }

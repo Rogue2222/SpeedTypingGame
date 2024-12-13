@@ -1,6 +1,9 @@
 using System.Collections.Generic;
 using System.Diagnostics;
+using Newtonsoft.Json.Linq;
 using UnityEngine;
+
+using SpeedTypingGame.Game.Persistence;
 
 // Data source: https://apiacoa.org/publications/teaching/datasets/google-10000-english.txt
 namespace SpeedTypingGame.Game.Exercises
@@ -9,23 +12,48 @@ namespace SpeedTypingGame.Game.Exercises
     /// Responsible for loading a dictionary which then can be used to randomly select words from for exercises.
     /// </summary>
     [AddComponentMenu("SpeedTypingGame/Game/Exercises/Exercise generator")]
-    public class ExerciseGenerator : MonoBehaviour
+    public class ExerciseGenerator : MonoBehaviour, IPersistable
     {
+        /// <summary>
+        /// The generation method of the generator. Can be either word count or character count.
+        /// </summary>
+        public enum Method
+        {
+            WordCount,
+            CharacterCount
+        }
+
+
         // Fields
         private const string _DebugGroup = "GENERATOR";
-        private const int _MinCharacterCount = 32;
-        private const int _MaxCharacterCount = 32;
+        public const int MinWordCount = 1;
+        public const int MaxWordCount = 32;
+        public const int MinCharacterCount = 4;
+        public const int MaxCharacterCount = 192;
         private static readonly List<string> _Dictionary = new();
 
-        [SerializeField] private Vector2Int _characterCountRange = new(_MinCharacterCount, _MaxCharacterCount);
         [SerializeField] private TextAsset _dictionaryFile;
+        private Method _method;
+        private int _wordCount = MinWordCount + (MaxWordCount - MinWordCount) / 2;
+        private int _characterCount = MinCharacterCount + (MaxCharacterCount - MinCharacterCount) / 2;
 
 
         // Properties
-        /// <summary>
-        /// The number of words in the dictionary.
-        /// </summary>
         public static int DictionarySize => _Dictionary.Count;
+        public bool IsWordCounter => _method == Method.WordCount;
+        public bool IsCharacterCounter => _method == Method.CharacterCount;
+        public int WordCount
+        {
+            get => _wordCount;
+            set => _wordCount =
+                value >= MinWordCount && value <= MaxWordCount ? value : _wordCount;
+        }
+        public int CharacterCount
+        {
+            get => _characterCount;
+            set => _characterCount =
+                value >= MinCharacterCount && value <= MaxCharacterCount ? value : _characterCount;
+        }
 
 
         // Methods
@@ -56,36 +84,49 @@ namespace SpeedTypingGame.Game.Exercises
         }
 
         /// <summary>
-        /// Generates a list of words by randomly selecting them from <c>_Dictionary</c> in a way that the sum of their<br />
-        /// lengths is roughly in the range of [<c>minCharacterCount</c>, <c>maxCharacterCount</c>].
+        /// Sets the generator to generate by counting words.
         /// </summary>
-        /// <param name="minCharacterCount">
-        /// The lower limit for the total length of words (<c>_MinCharacterCount</c> by default).</param>
-        /// <param name="maxCharacterCount">
-        /// The rough upper limit for the total length of words (<c>_MaxCharacterCount</c> by default).</param>
+        public void UseWordCount()
+        {
+            _method = Method.WordCount;
+        }
+
+        /// <summary>
+        /// Sets the generator to generate by counting characters.
+        /// </summary>
+        public void UseCharacterCount()
+        {
+            _method = Method.CharacterCount;
+        }
+
+        /// <summary>
+        /// Generates a list of words by randomly selecting them from <c>_Dictionary</c> in a way that the either <br />
+        /// the number of words or the sum of their lengths is roughly equal to either <c>_wordCount</c> or <br />
+        /// <c>_characterCount</c> depending on the currently active method.
         /// <returns>A list of randomly selected words from <c>_Dictionary</c>.</returns>
-        public List<string> Generate(int minCharacterCount = _MinCharacterCount, int maxCharacterCount = _MaxCharacterCount)
+        public List<string> Generate()
         {
             Stopwatch stopwatch = Stopwatch.StartNew();
 
-            int targetCharacterCount = Random.Range(minCharacterCount, maxCharacterCount) - 2;
+            List<string> words = new(MaxCharacterCount / 2);
+            HashSet<int> usedIndexes = new(MaxCharacterCount / 2);            
             int characterCount = 0;
 
-            List<string> words = new(targetCharacterCount / 2);
-            HashSet<int> usedIndexes = new(targetCharacterCount / 2);
-            
-            while (characterCount < targetCharacterCount)
+            if (IsWordCounter)
             {
-                int index;
-                do
+                for (int i = 0; i < _wordCount; ++i)
                 {
-                    index = Random.Range(0, _Dictionary.Count);
-                } while (usedIndexes.Contains(index));
-                usedIndexes.Add(index);
-
-                string word = _Dictionary[index];
-                words.Add(word);
-                characterCount += word.Length;
+                    int index = SelectIndex(usedIndexes);
+                    AddWord(index, words, ref characterCount);
+                }
+            }
+            else
+            {
+                while (characterCount < _characterCount)
+                {
+                    int index = SelectIndex(usedIndexes);
+                    AddWord(index, words, ref characterCount);
+                }
             }
 
             stopwatch.Stop();
@@ -96,25 +137,59 @@ namespace SpeedTypingGame.Game.Exercises
         }
 
         /// <summary>
-        /// Generates a list of words by randomly selecting them from <c>_Dictionary</c> in a way that the sum of their<br />
-        /// lengths is roughly in the range of [<c>_characterCountRange.x</c>, <c>maxCharacterCount</c>].
+        /// Selects an index randomly from the range of [0, <c>_Dictionary.Count</c>]<br />
+        /// which it is not yet included in the provided <c>HashSet</c>.
         /// </summary>
-        /// <param name="maxCharacterCount">
-        /// The rough upper limit for the total length of words. (<c>_MaxCharacterCount</c> by default)</param>
-        /// <returns>A list of randomly selected words from <c>_Dictionary.</c></returns>
-        public List<string> Generate(int maxCharacterCount = _MaxCharacterCount)
+        /// <param name="usedIndexes">The provided <c>HashSet</c> which values should be avoided.</param>
+        /// <returns>A new, unique, random index.</returns>
+        private int SelectIndex(HashSet<int> usedIndexes)
         {
-            return Generate(_characterCountRange.x, maxCharacterCount);
+            int index;
+            do
+            {
+                index = Random.Range(0, _Dictionary.Count);
+            } while (usedIndexes.Contains(index));
+            usedIndexes.Add(index);
+            
+            return index;
         }
 
         /// <summary>
-        /// Generates a list of words by randomly selecting them from <c>_Dictionary</c> in a way that the sum of their<br />
-        /// lengths is roughly in the range of [<c>_characterCountRange.x</c>, <c>_characterCountRange.y</c>].
+        /// Adds a word to the word list currently being generated.
         /// </summary>
-        /// <returns>A list of randomly selected words from <c>_Dictionary.</c></returns>
-        public List<string> Generate()
+        /// <param name="index">The index of the word in <c>_Dictionary</c>.</param>
+        /// <param name="words">The list of words to append to.</param>
+        /// <param name="characterCount">The overall character count to increase.</param>
+        private void AddWord(int index, List<string> words, ref int characterCount)
         {
-            return Generate(_characterCountRange.x, _characterCountRange.y);
+            string word = _Dictionary[index];
+            words.Add(word);
+            characterCount += word.Length;
+        }
+
+        /// <summary>
+        /// Converts the generator into JSON format that stores its generation method, word and character counts.
+        /// </summary>
+        /// <returns>The JSON format of the generator's data.</returns>
+        public JToken ToJSON()
+        {
+            return new JObject()
+            {
+                { "m", _method.ToString() },
+                { "w", _wordCount },
+                { "c", _characterCount },
+            };
+        }
+
+        /// <summary>
+        /// Deconverts the generator's JSON format by setting from it its generation method, word and character counts.
+        /// </summary>
+        /// <param name="json">The JSON format of the generator</param>
+        public void FromJSON(JToken json)
+        {
+            _method = json["m"].Value<string>().Equals("WordCount") ? Method.WordCount : Method.CharacterCount;
+            _wordCount = json["w"].Value<int>();
+            _characterCount = json["c"].Value<int>();
         }
 
         /// <summary>
