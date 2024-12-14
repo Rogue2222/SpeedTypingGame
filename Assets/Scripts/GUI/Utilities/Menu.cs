@@ -18,6 +18,14 @@ namespace SpeedTypingGame.GUI
 
 
         // Methods
+        protected virtual void Update()
+        {
+            if (Game.Input.EscapeKeyPressed())
+            {
+                Back();
+            }
+        }
+        
         public void Open()
         {
             gameObject.SetActive(true);
@@ -48,8 +56,7 @@ namespace SpeedTypingGame.GUI
             }
         }
 
-        public virtual void Back()
-        {
+        public virtual void Back() {
             _gui.MainMenu.Open();
 
             Close();

@@ -18,6 +18,7 @@ namespace SpeedTypingGame.GUI
         [SerializeField] private StatisticsMenu _statisticsMenu;
         [SerializeField] private OverlayMenu _overlayMenu;
         [SerializeField] private PauseMenu _pauseMenu;
+        [SerializeField] private SettingsMenu _settingsMenu;
         private Menu[] _menus;
 
 
@@ -28,6 +29,7 @@ namespace SpeedTypingGame.GUI
         public StatisticsMenu StatisticsMenu => _statisticsMenu;
         public OverlayMenu OverlayMenu => _overlayMenu;
         public PauseMenu PauseMenu => _pauseMenu;
+        public SettingsMenu SettingsMenu => _settingsMenu;
 
 
         // Methods
@@ -38,7 +40,8 @@ namespace SpeedTypingGame.GUI
                 _mainMenu,
                 _statisticsMenu,
                 _overlayMenu,
-                _pauseMenu
+                _pauseMenu,
+                _settingsMenu
             };
         }
 

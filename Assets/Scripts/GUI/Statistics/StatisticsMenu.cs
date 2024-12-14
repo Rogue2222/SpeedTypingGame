@@ -21,14 +21,6 @@ namespace SpeedTypingGame.GUI.Statistics
         [SerializeField] private TextMeshProUGUI averageWpmText;
         
         // Methods
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.Escape))
-            {
-                Back();
-            }
-        }
-
         private void OnEnable()
         {
             if (persistenceHandler.ExerciseDataCount > 0)

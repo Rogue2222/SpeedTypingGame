@@ -57,6 +57,11 @@ namespace SpeedTypingGame.GUI.Main
             _gui.StatisticsMenu.Open();
             Close();
         }
+        public void OpenSettingsMenu()
+        {
+            _gui.SettingsMenu.Open();
+            Close();
+        }
 
         public void ExitGame()
         {

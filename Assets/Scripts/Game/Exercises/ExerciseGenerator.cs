@@ -26,9 +26,9 @@ namespace SpeedTypingGame.Game.Exercises
 
         // Fields
         private const string _DebugGroup = "GENERATOR";
-        public const int MinWordCount = 1;
+        public const int MinWordCount = 4;
         public const int MaxWordCount = 32;
-        public const int MinCharacterCount = 4;
+        public const int MinCharacterCount = 16;
         public const int MaxCharacterCount = 192;
         private static readonly List<string> _Dictionary = new();
 

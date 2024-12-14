@@ -6,9 +6,12 @@ namespace SpeedTypingGame.Game {
     public class InputManager : MonoBehaviour {
 
         public bool PauseKeyPressed() {
-            if (Input.GetKeyDown(KeyCode.Escape)) return true;
             return Input.GetKey(KeyCode.LeftControl) &&
                    (Input.GetKeyDown(KeyCode.H) || Input.GetKeyDown(KeyCode.P));
+        }
+
+        public bool EscapeKeyPressed() {
+            return Input.GetKeyDown(KeyCode.Escape);
         }
 
         public bool NoInput() {

@@ -2,6 +2,7 @@ using System;
 using System.Text;
 using SpeedTypingGame.Game;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace SpeedTypingGame.GUI.Overlay
@@ -30,8 +31,9 @@ namespace SpeedTypingGame.GUI.Overlay
         }
 
         // Methods
-        private void Update()
+        protected override void Update()
         {
+            base.Update();
             // _timerLabel.text = $"{(int)(Game.ElapsedTime * 100 + 0.5f) / 100f} s";
             if (Game.ElapsedTime > 0 && Game.IsRunning && !Game.IsPaused) {
                 UpdateStatistics();
@@ -44,6 +46,8 @@ namespace SpeedTypingGame.GUI.Overlay
             {
                 _gui.PauseMenu.Toggle();
             }
+
+            
         }
 
         public void UpdateStatistics() {

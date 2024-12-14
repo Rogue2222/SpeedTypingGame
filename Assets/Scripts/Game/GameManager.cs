@@ -41,7 +41,7 @@ namespace SpeedTypingGame.Game
                 _elapsedTime += Time.deltaTime;
             }
             if (_input.NoInput()) return;
-            if (_exercise != null) Debug.Log($"Accuracy: {_exercise.Accuracy:f2}%");
+            // if (_exercise != null) Debug.Log($"Accuracy: {_exercise.Accuracy:f2}%");
             
             if (_input.PauseKeyPressed()) {
                 if (!_isPaused)
@@ -85,7 +85,7 @@ namespace SpeedTypingGame.Game
         private void LoadNewExercise()
         {
             if (_exercise != null && _exercise.IsFinished) _persistence.AddExerciseData(new(_exercise));
-            _exercise = new(this);
+            _exercise = new(this, GUI.SettingsMenu.CustomText);
         }
 
         public void FinishExercise()

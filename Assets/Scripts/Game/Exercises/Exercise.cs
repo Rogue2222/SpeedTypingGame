@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
+using JetBrains.Annotations;
 using UnityEngine;
 
 namespace SpeedTypingGame.Game.Exercises
@@ -45,11 +47,11 @@ namespace SpeedTypingGame.Game.Exercises
         public int RightCharactersFromCurrentInput => CurrentWord.StartsWith(CurrentInput) ? CurrentInput.Length : 0;
 
         // Methods
-        public Exercise(GameManager game, int length = DEFAULT_LENGTH, int wordLength = WORD_COUNT)
+        public Exercise(GameManager game, string exerciseText = null, int length = DEFAULT_LENGTH, int wordLength = WORD_COUNT)
         {
             _game = game;
             
-            _exerciseWords = _game.Generator.Generate();
+            _exerciseWords = string.IsNullOrEmpty(exerciseText) ? _game.Generator.Generate() : FilterRandomCharacters(exerciseText) ;
 
             Debug.Log("Whole text: " + Text);
         }
@@ -81,8 +83,7 @@ namespace SpeedTypingGame.Game.Exercises
                 return;
             }
 
-
-            if (input.EndsWith(" ") && input.Length > 2 && string.Equals(CurrentWord, input[..^1])) {
+            if (input.EndsWith(" ") && input.Length > 1 && string.Equals(CurrentWord, input[..^1])) {
                 _currentWordIndex++;
                 _game.GUI.OverlayMenu.ClearInputField();
             }
@@ -97,6 +98,12 @@ namespace SpeedTypingGame.Game.Exercises
         public int GetWordsLenghtTillIndex(int index) {
             return ExerciseWords.Take(index).Select(s => s.Length).Sum() + index; // + index is for the spaces
         }
-        
+
+        private List<string> FilterRandomCharacters(string exerciseText) {
+            Regex regex = new Regex(@"\s+");
+            exerciseText = regex.Replace(exerciseText, " ");
+            exerciseText = exerciseText.Trim();
+            return exerciseText.Split(' ').ToList();
+        }
     }
 }
