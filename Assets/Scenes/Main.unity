@@ -7598,7 +7598,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Use custom text...
+  m_text: Use custom text (more then 16 characthers)...
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c480098620c95f84a9d844104d22b0da, type: 2}
   m_sharedMaterial: {fileID: 5293095683542488252, guid: c480098620c95f84a9d844104d22b0da, type: 2}

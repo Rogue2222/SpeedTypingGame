@@ -51,7 +51,7 @@ namespace SpeedTypingGame.Game.Exercises
         {
             _game = game;
             
-            _exerciseWords = string.IsNullOrEmpty(exerciseText) ? _game.Generator.Generate() : FilterRandomCharacters(exerciseText) ;
+            _exerciseWords = string.IsNullOrEmpty(exerciseText) || exerciseText.Length <= 16 ? _game.Generator.Generate() : FilterRandomCharacters(exerciseText) ;
 
             Debug.Log("Whole text: " + Text);
         }
