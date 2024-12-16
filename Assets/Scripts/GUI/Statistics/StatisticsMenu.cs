@@ -21,7 +21,7 @@ namespace SpeedTypingGame.GUI.Statistics
         [SerializeField] private TextMeshProUGUI averageWpmText;
         
         // Methods
-        private void OnEnable()
+        public void OnEnable()
         {
             if (persistenceHandler.ExerciseDataCount > 0)
             {
@@ -29,18 +29,25 @@ namespace SpeedTypingGame.GUI.Statistics
                 averageAccuracyText.SetText($"{persistenceHandler.Accuracy.Average():F2}");
                 maxWpmText.SetText($"{persistenceHandler.WordsPerMinute.Max():F2}");
                 averageWpmText.SetText($"{persistenceHandler.WordsPerMinute.Average():F2}");
-
-                /*
-                List<double> randomData = new List<double>();
-                for (int i = 0; i < 500; i++)
-                {
-                    randomData.Add(Mathf.Log(i + 1, 1.5f) + 50 + UnityEngine.Random.Range(-Mathf.Log(i + 1, 15), Mathf.Log(i + 1, 15)));
-                }
-                */
-                
-                accuracyDiagram.UpdateDataPoints(persistenceHandler.Accuracy.TakeLast(500).ToList());
-                wpmDiagram.UpdateDataPoints(persistenceHandler.WordsPerMinute.TakeLast(500).ToList());
             }
+            else
+            {
+                maxAccuracyText.SetText($"{0:F2}");
+                averageAccuracyText.SetText($"{0:F2}");
+                maxWpmText.SetText($"{0:F2}");
+                averageWpmText.SetText($"{0:F2}");
+            }
+
+            /*
+            List<double> randomData = new List<double>();
+            for (int i = 0; i < 500; i++)
+            {
+                randomData.Add(Mathf.Log(i + 1, 1.5f) + 50 + UnityEngine.Random.Range(-Mathf.Log(i + 1, 15), Mathf.Log(i + 1, 15)));
+            }
+            */
+
+            accuracyDiagram.UpdateDataPoints(persistenceHandler.Accuracy.TakeLast(500).ToList());
+            wpmDiagram.UpdateDataPoints(persistenceHandler.WordsPerMinute.TakeLast(500).ToList());
         }
     }
 }

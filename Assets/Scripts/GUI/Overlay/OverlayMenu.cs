@@ -1,9 +1,9 @@
 using System;
 using System.Text;
-using SpeedTypingGame.Game;
-using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
+using TMPro;
+
+using SpeedTypingGame.Game;
 
 namespace SpeedTypingGame.GUI.Overlay
 {
@@ -41,13 +41,6 @@ namespace SpeedTypingGame.GUI.Overlay
 
             // So the input box always in focus
             _inputField.ActivateInputField();
-
-            if (_inputManager.PauseKeyPressed())
-            {
-                _gui.PauseMenu.Toggle();
-            }
-
-            
         }
 
         public void UpdateStatistics() {

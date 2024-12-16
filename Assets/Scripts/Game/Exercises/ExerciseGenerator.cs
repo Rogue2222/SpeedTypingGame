@@ -17,7 +17,7 @@ namespace SpeedTypingGame.Game.Exercises
         /// <summary>
         /// The generation method of the generator. Can be either word count or character count.
         /// </summary>
-        public enum Method
+        private enum Method
         {
             WordCount,
             CharacterCount

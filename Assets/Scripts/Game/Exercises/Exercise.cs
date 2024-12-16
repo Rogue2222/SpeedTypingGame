@@ -71,7 +71,6 @@ namespace SpeedTypingGame.Game.Exercises
                 _misses = 0;
                 _game.StartExercise();
             }
-            if (input.Length > 0) _game.GUI.PauseMenu.ResumeGame();
             
             //Last word don't need space *pain*
             Debug.Log(WordCount + "/" + _currentWordIndex + " input: " + input + "|");

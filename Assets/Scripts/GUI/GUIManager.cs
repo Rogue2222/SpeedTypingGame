@@ -2,9 +2,9 @@ using UnityEngine;
 
 using SpeedTypingGame.Game;
 using SpeedTypingGame.GUI.Main;
-using SpeedTypingGame.GUI.Overlay;
-using SpeedTypingGame.GUI.Pause;
+using SpeedTypingGame.GUI.Settings;
 using SpeedTypingGame.GUI.Statistics;
+using SpeedTypingGame.GUI.Overlay;
 
 namespace SpeedTypingGame.GUI
 {
@@ -17,7 +17,6 @@ namespace SpeedTypingGame.GUI
         [SerializeField] private MainMenu _mainMenu;
         [SerializeField] private StatisticsMenu _statisticsMenu;
         [SerializeField] private OverlayMenu _overlayMenu;
-        [SerializeField] private PauseMenu _pauseMenu;
         [SerializeField] private SettingsMenu _settingsMenu;
         private Menu[] _menus;
 
@@ -28,7 +27,6 @@ namespace SpeedTypingGame.GUI
         public MainMenu MainMenu => _mainMenu;
         public StatisticsMenu StatisticsMenu => _statisticsMenu;
         public OverlayMenu OverlayMenu => _overlayMenu;
-        public PauseMenu PauseMenu => _pauseMenu;
         public SettingsMenu SettingsMenu => _settingsMenu;
 
 
@@ -40,7 +38,6 @@ namespace SpeedTypingGame.GUI
                 _mainMenu,
                 _statisticsMenu,
                 _overlayMenu,
-                _pauseMenu,
                 _settingsMenu
             };
         }
