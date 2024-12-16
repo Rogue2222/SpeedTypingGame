@@ -100,6 +100,7 @@ namespace SpeedTypingGame.Game
             FinishExercise();
             _gui.OverlayMenu.ClearInputField();
             _gui.OverlayMenu.UpdateText();
+            _gui.OverlayMenu.UpdateStatistics();
         }
 
 #if UNITY_EDITOR

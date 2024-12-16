@@ -9,24 +9,35 @@ namespace SpeedTypingGame.GUI.Settings {
     public class SettingsMenu : Menu {
         
         // Fields
-        [SerializeField] private TMP_InputField inputField;
+        [SerializeField] private TMP_InputField _inputField;
         [SerializeField] private TMP_Dropdown _generatorMethodDropdown;
         [SerializeField] private Slider _generatorCountSlider;
         [SerializeField] private TextMeshProUGUI _generatorCountSliderValueLabel;
         [SerializeField] private TextMeshProUGUI _warningLabel;
+        private bool _canUpdateCount = true;
+        private string _warningLabelText;
         
         
         // Properties
-        public string CustomText => inputField.text;
+        public string CustomText => _inputField.text;
 
 
         // Methods
         private void Start()
         {
+            _inputField.text = Game.Generator.CustomText;
+
             UpdateGeneratorMethodDropdown();
             UpdateGeneratorCountSlider();
 
             _warningLabel.gameObject.SetActive(false);
+            _warningLabelText = _warningLabel.text;
+        }
+
+        public void SetCustomText()
+        {
+            Game.Generator.CustomText = _inputField.text;
+            Game.Persistence.Save();
         }
 
         public void UpdateGeneratorMethodDropdown()
@@ -36,6 +47,8 @@ namespace SpeedTypingGame.GUI.Settings {
 
         public void SelectGeneratorMethod()
         {
+            _canUpdateCount = false;
+
             if (_generatorMethodDropdown.value == 0)
             {
                 Game.Generator.UseWordCount();
@@ -47,31 +60,32 @@ namespace SpeedTypingGame.GUI.Settings {
 
             UpdateGeneratorCountSlider();
             Game.Persistence.Save();
+
+            _canUpdateCount = true;
         }
 
         public void UpdateGeneratorCountSlider()
         {
-            int wordCount = Game.Generator.WordCount;
-            int characterCount = Game.Generator.CharacterCount;
-
             if (Game.Generator.IsWordCounter)
             {
-                _generatorCountSlider.minValue = ExerciseGenerator.MinWordCount;
                 _generatorCountSlider.maxValue = ExerciseGenerator.MaxWordCount;
-                _generatorCountSlider.SetValueWithoutNotify(wordCount);
+                _generatorCountSlider.minValue = ExerciseGenerator.MinWordCount;
+                _generatorCountSlider.SetValueWithoutNotify(Game.Generator.WordCount);
                 _generatorCountSliderValueLabel.text = $"{_generatorCountSlider.value}";
             }
             else
             {
-                _generatorCountSlider.minValue = ExerciseGenerator.MinCharacterCount;
                 _generatorCountSlider.maxValue = ExerciseGenerator.MaxCharacterCount;
-                _generatorCountSlider.SetValueWithoutNotify(characterCount);
+                _generatorCountSlider.minValue = ExerciseGenerator.MinCharacterCount;
+                _generatorCountSlider.SetValueWithoutNotify(Game.Generator.CharacterCount);
                 _generatorCountSliderValueLabel.text = $"~{_generatorCountSlider.value}";
             }
         }
 
         public void SetGeneratorCount()
         {
+            if (!_canUpdateCount) return;
+            
             if (Game.Generator.IsWordCounter)
             {
                 Game.Generator.WordCount = (int)_generatorCountSlider.value;
@@ -86,11 +100,6 @@ namespace SpeedTypingGame.GUI.Settings {
             Game.Persistence.Save();
         }
 
-        public void ClearData()
-        {
-            Game.Persistence.Clear();
-        }
-
         public void HoverOnClearButton()
         {
             _warningLabel.gameObject.SetActive(true);
@@ -99,6 +108,14 @@ namespace SpeedTypingGame.GUI.Settings {
         public void HoverOffClearButton()
         {
             _warningLabel.gameObject.SetActive(false);
+            _warningLabel.text = _warningLabelText;
+        }
+
+        public void ClearData()
+        {
+            Game.Persistence.Clear();
+
+            _warningLabel.text = "Cleared data :(";
         }
     }
 }

@@ -1,5 +1,4 @@
 using System.Linq;
-using GUI.Statistics;
 using SpeedTypingGame.Game.Persistence;
 using TMPro;
 using UnityEngine;

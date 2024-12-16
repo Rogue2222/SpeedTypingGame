@@ -28,14 +28,19 @@ namespace SpeedTypingGame.Game.Exercises
         private const string _DebugGroup = "GENERATOR";
         public const int MinWordCount = 4;
         public const int MaxWordCount = 32;
+        public const int DefaultWordCount = MinWordCount + (MaxWordCount - MinWordCount) / 2;
         public const int MinCharacterCount = 16;
         public const int MaxCharacterCount = 192;
+        public const int DefaultCharacterCount = MinCharacterCount + (MaxCharacterCount - MinCharacterCount) / 2;
         private static readonly List<string> _Dictionary = new();
+
+        [SerializeField] private GameManager _game;
 
         [SerializeField] private TextAsset _dictionaryFile;
         private Method _method;
-        private int _wordCount = MinWordCount + (MaxWordCount - MinWordCount) / 2;
-        private int _characterCount = MinCharacterCount + (MaxCharacterCount - MinCharacterCount) / 2;
+        private int _wordCount = DefaultWordCount;
+        private int _characterCount = DefaultCharacterCount;
+        private string _customText = "";
 
 
         // Properties
@@ -53,6 +58,11 @@ namespace SpeedTypingGame.Game.Exercises
             get => _characterCount;
             set => _characterCount =
                 value >= MinCharacterCount && value <= MaxCharacterCount ? value : _characterCount;
+        }
+        public string CustomText
+        {
+            get => _customText;
+            set => _customText = value ?? "";
         }
 
 
@@ -178,6 +188,7 @@ namespace SpeedTypingGame.Game.Exercises
                 { "m", _method.ToString() },
                 { "w", _wordCount },
                 { "c", _characterCount },
+                { "t", _customText }
             };
         }
 
@@ -190,6 +201,7 @@ namespace SpeedTypingGame.Game.Exercises
             _method = json["m"].Value<string>().Equals("WordCount") ? Method.WordCount : Method.CharacterCount;
             _wordCount = json["w"].Value<int>();
             _characterCount = json["c"].Value<int>();
+            _customText = json["t"] == null ? "" : json["t"].Value<string>();
         }
 
         /// <summary>

@@ -3,7 +3,7 @@ using System.Linq;
 using UnityEngine;
 using TMPro;
 
-namespace GUI.Statistics
+namespace SpeedTypingGame.GUI.Statistics
 {
     [AddComponentMenu("SpeedTypingGame/GUI/Statistics/Diagram drawer")]
     public class DiagramDrawer : MonoBehaviour

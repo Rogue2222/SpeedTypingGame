@@ -10,12 +10,8 @@ namespace SpeedTypingGame.Game.Exercises
     public class Exercise
     {
         // Fields
-        public const int DEFAULT_LENGTH = 4;
-        public const int WORD_COUNT = 2;
+        private readonly GameManager _game;
 
-        private GameManager _game;
-
-        private readonly string _text;
         private readonly List<string> _exerciseWords;
         private int _misses;
         private int _currentWordIndex = 0;
@@ -24,7 +20,6 @@ namespace SpeedTypingGame.Game.Exercises
 
         // Properties
         public string Text => string.Join(" ", _exerciseWords); //_exerciseWords.Aggregate((x, n) => x + " " + n);
-        public int Length => _text.Length;
         public int WordCount => _exerciseWords.Count;
         public string this[int index] => _exerciseWords[index];
         public string CurrentWord => this[_currentWordIndex];
@@ -47,7 +42,7 @@ namespace SpeedTypingGame.Game.Exercises
         public int RightCharactersFromCurrentInput => CurrentWord.StartsWith(CurrentInput) ? CurrentInput.Length : 0;
 
         // Methods
-        public Exercise(GameManager game, string exerciseText = null, int length = DEFAULT_LENGTH, int wordLength = WORD_COUNT)
+        public Exercise(GameManager game, string exerciseText = null)
         {
             _game = game;
             
@@ -71,6 +66,7 @@ namespace SpeedTypingGame.Game.Exercises
                 _misses = 0;
                 _game.StartExercise();
             }
+            if (input.Length > 0) _game.Resume();
             
             //Last word don't need space *pain*
             Debug.Log(WordCount + "/" + _currentWordIndex + " input: " + input + "|");
