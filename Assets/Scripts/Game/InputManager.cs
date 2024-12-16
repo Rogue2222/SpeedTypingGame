@@ -32,22 +32,22 @@ namespace SpeedTypingGame.Game {
         public bool Play() {
             return Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.P) ||
                 Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return) || 
-                Input.GetKeyDown(KeyCode.Alpha1);
+                Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Keypad1);
         }
 
         public bool Settings()
         {
-            return Input.GetKeyDown(KeyCode.Alpha2);
+            return Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Keypad2);
         }
 
         public bool Statistics()
         {
-            return Input.GetKeyDown(KeyCode.Alpha3);
+            return Input.GetKeyDown(KeyCode.Alpha3) || Input.GetKeyDown(KeyCode.Keypad3);
         }
 
         public bool Exit()
         {
-            return Input.GetKeyDown(KeyCode.Alpha4);
+            return Input.GetKeyDown(KeyCode.Alpha4) || Input.GetKeyDown(KeyCode.Keypad4);
         }
     }
 }
