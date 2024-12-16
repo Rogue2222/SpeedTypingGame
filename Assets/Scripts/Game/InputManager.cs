@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace SpeedTypingGame.Game {
@@ -6,12 +5,12 @@ namespace SpeedTypingGame.Game {
     public class InputManager : MonoBehaviour {
 
         public bool PauseKeyPressed() {
-            return Input.GetKey(KeyCode.LeftControl) &&
+            return (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl)) &&
                    (Input.GetKeyDown(KeyCode.H) || Input.GetKeyDown(KeyCode.P));
         }
 
         public bool EscapeKeyPressed() {
-            return Input.GetKeyDown(KeyCode.Escape);
+            return Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Tab);
         }
 
         public bool NoInput() {
@@ -22,16 +21,33 @@ namespace SpeedTypingGame.Game {
             return string.IsNullOrEmpty(Input.inputString);
         }
         
-        public bool Restart() { // CTRL + R? 
-            throw new NotImplementedException();
+        public bool Restart() { // SHIFT + R? 
+            return (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) && Input.GetKeyDown(KeyCode.R);
         }
 
-        public bool NewExercise() {  // CTRL + N?
-            return Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.N);
+        public bool NewExercise() {  // SHIFT + N?
+            return (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) && Input.GetKeyDown(KeyCode.N);
         }
         
         public bool Play() {
-            return Input.GetKey(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.P);
-        }        
+            return Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.P) ||
+                Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return) || 
+                Input.GetKeyDown(KeyCode.Alpha1);
+        }
+
+        public bool Settings()
+        {
+            return Input.GetKeyDown(KeyCode.Alpha2);
+        }
+
+        public bool Statistics()
+        {
+            return Input.GetKeyDown(KeyCode.Alpha3);
+        }
+
+        public bool Exit()
+        {
+            return Input.GetKeyDown(KeyCode.Alpha4);
+        }
     }
 }

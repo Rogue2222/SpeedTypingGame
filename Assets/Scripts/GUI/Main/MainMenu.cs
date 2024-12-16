@@ -36,6 +36,20 @@ namespace SpeedTypingGame.GUI.Main
             if (_inputManager.Play()) {
                 PlayGame();
             }
+            else if (_inputManager.Settings())
+            {
+                OpenSettingsMenu();
+            }
+            else if (_inputManager.Statistics())
+            {
+                OpenStatisticsMenu();
+            }
+#if !UNITY_WEBGL
+            else if (_inputManager.Exit())
+            {
+                ExitGame();
+            }
+#endif
         }
 
         public void PlayGame()
@@ -46,15 +60,15 @@ namespace SpeedTypingGame.GUI.Main
             Close();
         }
 
-        public void OpenStatisticsMenu()
-        {
-            _gui.StatisticsMenu.Open();
-            Close();
-        }
-
         public void OpenSettingsMenu()
         {
             _gui.SettingsMenu.Open();
+            Close();
+        }
+
+        public void OpenStatisticsMenu()
+        {
+            _gui.StatisticsMenu.Open();
             Close();
         }
 

@@ -931,7 +931,7 @@ RectTransform:
   m_GameObject: {fileID: 274434843}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.0000799, y: 1.0000799, z: 1.0000799}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 953137341}
@@ -939,8 +939,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -115}
-  m_SizeDelta: {x: 1101.59, y: 546.38}
+  m_AnchoredPosition: {x: 0, y: -75}
+  m_SizeDelta: {x: 1050, y: 500}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &274434845
 MonoBehaviour:
@@ -1021,7 +1021,19 @@ MonoBehaviour:
       m_Calls: []
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1473390534}
+        m_TargetAssemblyTypeName: SpeedTypingGame.GUI.Settings.SettingsMenu, Assembly-CSharp
+        m_MethodName: SetCustomText
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_OnTouchScreenKeyboardStatusChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -1032,12 +1044,12 @@ MonoBehaviour:
   m_CaretBlinkRate: 0.85
   m_CaretWidth: 2
   m_ReadOnly: 0
-  m_RichText: 1
+  m_RichText: 0
   m_GlobalFontAsset: {fileID: 11400000, guid: c480098620c95f84a9d844104d22b0da, type: 2}
   m_OnFocusSelectAll: 1
   m_ResetOnDeActivation: 1
   m_KeepTextSelectionVisible: 0
-  m_RestoreOriginalTextOnEscape: 1
+  m_RestoreOriginalTextOnEscape: 0
   m_isRichTextEditingAllowed: 0
   m_LineLimit: 7
   isAlert: 0
@@ -4954,7 +4966,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 275, y: 0}
+  m_SizeDelta: {x: 250, y: 0}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &1261391286
 MonoBehaviour:
@@ -5164,7 +5176,7 @@ MonoBehaviour:
   m_ActiveFontFeatures: 6e72656b
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
-  m_isRichText: 1
+  m_isRichText: 0
   m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 1
@@ -5544,8 +5556,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -0.0019569, y: -750}
-  m_SizeDelta: {x: 1101.6, y: 125}
+  m_AnchoredPosition: {x: 0, y: -675}
+  m_SizeDelta: {x: 1050, y: 125}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1436488516
 GameObject:
@@ -5756,7 +5768,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _gui: {fileID: 730317865}
-  inputField: {fileID: 274434845}
+  _inputField: {fileID: 274434845}
   _generatorMethodDropdown: {fileID: 2135278691}
   _generatorCountSlider: {fileID: 35626984}
   _generatorCountSliderValueLabel: {fileID: 1014600072}
@@ -6750,6 +6762,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a87549d7ac3bfc84bab3a5893fa6bf20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _game: {fileID: 2101463911}
   _dictionaryFile: {fileID: 4900000, guid: 9948975c05117ba42b9579ff0ece553d, type: 3}
 --- !u!1 &1842959484
 GameObject:
@@ -7055,8 +7068,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 550.8, y: 0}
-  m_SizeDelta: {x: 250, y: 0}
+  m_AnchoredPosition: {x: 525, y: 0}
+  m_SizeDelta: {x: 225, y: 0}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &1862025745
 MonoBehaviour:
@@ -7951,8 +7964,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 575, y: 75}
-  m_SizeDelta: {x: 650, y: 125}
+  m_AnchoredPosition: {x: 575, y: 45}
+  m_SizeDelta: {x: 650, y: 200}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &2140398487
 MonoBehaviour:
@@ -8002,15 +8015,15 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 30
-  m_fontSizeBase: 30
+  m_fontSize: 40
+  m_fontSizeBase: 40
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 3
+  m_fontStyle: 2
   m_HorizontalAlignment: 8
-  m_VerticalAlignment: 256
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
