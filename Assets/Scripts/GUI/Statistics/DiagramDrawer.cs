@@ -19,6 +19,7 @@ namespace SpeedTypingGame.GUI.Statistics
         [SerializeField] private TextMeshProUGUI xMinTick;
         [SerializeField] private TextMeshProUGUI xMaxTick;
         [SerializeField] private GameObject yTickLabels;
+        [SerializeField] private bool limitYAxisTo100;
     
         private List<float> _dataPoints;
         
@@ -92,20 +93,23 @@ namespace SpeedTypingGame.GUI.Statistics
         private void DrawOne() {
             xMinTick.SetText("1");
             xMaxTick.SetText("1");
+
+            float yTickMinValue = _dataPoints[0] - _dataPoints[0] / 10;
+            float yTickMaxValue = limitYAxisTo100 ? 100 : _dataPoints[0] + _dataPoints[0] / 10;
             for (int i = 0; i < yTickLabels.transform.childCount; i++)
             {
-                float value = Mathf.Lerp(_dataPoints[0] + _dataPoints[0] / 10,
-                                         _dataPoints[0] - _dataPoints[0] / 10, 
-                                         i / 8f);
+                float value = Mathf.Lerp(yTickMaxValue, yTickMinValue, i / 8f);
                 yTickLabels.transform.GetChild(i).GetComponent<TextMeshProUGUI>().SetText($"{value:F2}"); 
             }
 
             statLineRenderer.positionCount = 2;
             statLineRenderer.widthMultiplier = 0.05f;
+            float yLinePosition = (limitYAxisTo100 ?
+                (_dataPoints[0] - yTickMinValue) / (yTickMaxValue - yTickMinValue) : 0.5f) * diagramSpace.rect.height;
             statLineRenderer.SetPosition(0, 
-                new Vector3(0, 0.5f * diagramSpace.rect.height, -1));
+                new Vector3(0, yLinePosition, -1));
             statLineRenderer.SetPosition(1, 
-                new Vector3(diagramSpace.rect.width, 0.5f * diagramSpace.rect.height, -1));
+                new Vector3(diagramSpace.rect.width, yLinePosition, -1));
         }
 
         public void UpdateDataPoints(List<double> newDataPoints)
