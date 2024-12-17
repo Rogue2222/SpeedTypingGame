@@ -20,19 +20,19 @@ namespace SpeedTypingGame.GUI.Statistics
         [SerializeField] private TextMeshProUGUI averageWpmText;
         
         // Methods
-        public void OnEnable()
+        private void OnEnable()
         {
             if (persistenceHandler.ExerciseDataCount > 0)
             {
-                maxAccuracyText.SetText($"{persistenceHandler.Accuracy.Max():F2}");
-                averageAccuracyText.SetText($"{persistenceHandler.Accuracy.Average():F2}");
+                maxAccuracyText.SetText($"{persistenceHandler.Accuracy.Max():F2}%");
+                averageAccuracyText.SetText($"{persistenceHandler.Accuracy.Average():F2}%");
                 maxWpmText.SetText($"{persistenceHandler.WordsPerMinute.Max():F2}");
                 averageWpmText.SetText($"{persistenceHandler.WordsPerMinute.Average():F2}");
             }
             else
             {
-                maxAccuracyText.SetText($"{0:F2}");
-                averageAccuracyText.SetText($"{0:F2}");
+                maxAccuracyText.SetText($"{0:F2}%");
+                averageAccuracyText.SetText($"{0:F2}%");
                 maxWpmText.SetText($"{0:F2}");
                 averageWpmText.SetText($"{0:F2}");
             }
