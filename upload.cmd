@@ -1,7 +1,7 @@
 :: The following upload script assumes that you have butler installed (https://itch.io/docs/butler/)
 :: and have a Builds directory at the same level as the project directory with the following structure:
 :: 	Builds/
-	  - WebGL.zip
+::	  - WebGL.zip
 :: 	  - Windows/
 ::	      - Windows.zip
 ::	  - macOS/
